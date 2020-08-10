@@ -3,12 +3,9 @@ layout: pattern
 title: Bridge
 folder: bridge
 permalink: /patterns/bridge/
-pumlid: BSR14SCm20J0Lf82BFxf1akCJ4R26ZZYzkE7zxLljJgoIVfu7S2A3v7pLRhYo3r3l9u6CPHwJjAH5uETllpZhKbejsqn86v1a-CExQwj2mdgqv8-oyev_W00
 categories: Structural
 tags:
- - Java
- - Gang Of Four
- - Difficulty-Intermediate
+ - Gang of Four
 ---
 
 ## Also known as
@@ -35,7 +32,7 @@ Wikipedia says
 
 Translating our weapon example from above. Here we have the `Weapon` hierarchy
 
-```
+```java
 public interface Weapon {
   void wield();
   void swing();
@@ -110,7 +107,7 @@ public class Hammer implements Weapon {
 
 And the separate enchantment hierarchy
 
-```
+```java
 public interface Enchantment {
   void onActivate();
   void apply();
@@ -156,8 +153,8 @@ public class SoulEatingEnchantment implements Enchantment {
 
 And both the hierarchies in action
 
-```
-Sword enchantedSword = new Sword(new SoulEatingEnchantment());
+```java
+var enchantedSword = new Sword(new SoulEatingEnchantment());
 enchantedSword.wield();
 enchantedSword.swing();
 enchantedSword.unwield();
@@ -168,7 +165,7 @@ enchantedSword.unwield();
 // The sword is unwielded.
 // Bloodlust slowly disappears.
 
-Hammer hammer = new Hammer(new FlyingEnchantment());
+var hammer = new Hammer(new FlyingEnchantment());
 hammer.wield();
 hammer.swing();
 hammer.unwield();
@@ -180,6 +177,9 @@ hammer.unwield();
 // The item's glow fades.
 ```
 
+## Class diagram
+![alt text](./etc/bridge.urm.png "Bridge class diagram")
+
 ## Applicability
 Use the Bridge pattern when
 
@@ -189,6 +189,10 @@ Use the Bridge pattern when
 * you have a proliferation of classes. Such a class hierarchy indicates the need for splitting an object into two parts. Rumbaugh uses the term "nested generalizations" to refer to such class hierarchies
 * you want to share an implementation among multiple objects (perhaps using reference counting), and this fact should be hidden from the client. A simple example is Coplien's String class, in which multiple objects can share the same string representation.
 
+## Tutorial
+* [Bridge Pattern Tutorial](https://www.journaldev.com/1491/bridge-design-pattern-java)
+
 ## Credits
 
-* [Design Patterns: Elements of Reusable Object-Oriented Software](http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612)
+* [Design Patterns: Elements of Reusable Object-Oriented Software](https://www.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=javadesignpat-20&linkId=675d49790ce11db99d90bde47f1aeb59)
+* [Head First Design Patterns: A Brain-Friendly Guide](https://www.amazon.com/gp/product/0596007124/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0596007124&linkCode=as2&tag=javadesignpat-20&linkId=6b8b6eea86021af6c8e3cd3fc382cb5b)

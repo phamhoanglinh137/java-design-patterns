@@ -1,6 +1,6 @@
-/**
+/*
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2019 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package concreteextensions;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import units.SergeantUnit;
 
 /**
@@ -30,9 +31,8 @@ import units.SergeantUnit;
  */
 public class SergeantTest {
   @Test
-  public void sergeantReady() throws Exception {
-    final Sergeant sergeant = new Sergeant(new SergeantUnit("SergeantUnitTest"));
-
+  public void sergeantReady() {
+    final var sergeant = new Sergeant(new SergeantUnit("SergeantUnitTest"));
     sergeant.sergeantReady();
   }
 

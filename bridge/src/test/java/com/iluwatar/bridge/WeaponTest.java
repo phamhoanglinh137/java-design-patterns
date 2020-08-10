@@ -1,6 +1,6 @@
-/**
+/*
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2019 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,39 +20,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package com.iluwatar.bridge;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 /**
  * Base class for weapon tests
  */
-public abstract class WeaponTest {
+abstract class WeaponTest {
 
   /**
-   * Invoke the basic actions of the given weapon, and test if the underlying enchantment implementation
-   * is invoked
-   *
+   * Invoke the basic actions of the given weapon, and test if the underlying enchantment
+   * implementation is invoked
    */
-  protected final void testBasicWeaponActions(final Weapon weapon) {
+  final void testBasicWeaponActions(final Weapon weapon) {
     assertNotNull(weapon);
-    Enchantment enchantment = weapon.getEnchantment();
+    var enchantment = weapon.getEnchantment();
     assertNotNull(enchantment);
     assertNotNull(weapon.getEnchantment());
 
     weapon.swing();
-    verify(enchantment, times(1)).apply();
+    verify(enchantment).apply();
     verifyNoMoreInteractions(enchantment);
 
     weapon.wield();
-    verify(enchantment, times(1)).onActivate();
+    verify(enchantment).onActivate();
     verifyNoMoreInteractions(enchantment);
 
     weapon.unwield();
-    verify(enchantment, times(1)).onDeactivate();
+    verify(enchantment).onDeactivate();
     verifyNoMoreInteractions(enchantment);
 
   }
