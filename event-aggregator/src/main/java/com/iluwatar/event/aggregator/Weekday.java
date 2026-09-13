@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +24,22 @@
  */
 package com.iluwatar.event.aggregator;
 
-/**
- * 
- * Weekday enumeration
- *
- */
+import lombok.RequiredArgsConstructor;
+
+/** Weekday enumeration. */
+@RequiredArgsConstructor
 public enum Weekday {
+  MONDAY("Monday"),
+  TUESDAY("Tuesday"),
+  WEDNESDAY("Wednesday"),
+  THURSDAY("Thursday"),
+  FRIDAY("Friday"),
+  SATURDAY("Saturday"),
+  SUNDAY("Sunday");
 
-  MONDAY("Monday"), TUESDAY("Tuesday"), WEDNESDAY("Wednesday"), THURSDAY("Thursday"), FRIDAY(
-      "Friday"), SATURDAY("Saturday"), SUNDAY("Sunday");
+  private final String description;
 
-  private String description;
-
-  Weekday(String description) {
-    this.description = description;
-  }
-
+  @Override
   public String toString() {
     return description;
   }

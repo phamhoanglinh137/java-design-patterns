@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +25,12 @@
 package com.iluwatar.stepbuilder;
 
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * The class with many parameters.
- */
+/** The class with many parameters. */
+@Getter
+@Setter
 public class Character {
 
   private String name;
@@ -40,65 +44,17 @@ public class Character {
     this.name = name;
   }
 
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getFighterClass() {
-    return fighterClass;
-  }
-
-  public void setFighterClass(String fighterClass) {
-    this.fighterClass = fighterClass;
-  }
-
-  public String getWizardClass() {
-    return wizardClass;
-  }
-
-  public void setWizardClass(String wizardClass) {
-    this.wizardClass = wizardClass;
-  }
-
-  public String getWeapon() {
-    return weapon;
-  }
-
-  public void setWeapon(String weapon) {
-    this.weapon = weapon;
-  }
-
-  public String getSpell() {
-    return spell;
-  }
-
-  public void setSpell(String spell) {
-    this.spell = spell;
-  }
-
-  public List<String> getAbilities() {
-    return abilities;
-  }
-
-  public void setAbilities(List<String> abilities) {
-    this.abilities = abilities;
-  }
-
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("This is a ")
-            .append(fighterClass != null ? fighterClass : wizardClass)
-            .append(" named ")
-            .append(name)
-            .append(" armed with a ")
-            .append(weapon != null ? weapon : spell != null ? spell : "with nothing")
-            .append(abilities != null ? " and wielding " + abilities + " abilities" : "")
-            .append('.');
-    return sb.toString();
+    return new StringBuilder()
+        .append("This is a ")
+        .append(fighterClass != null ? fighterClass : wizardClass)
+        .append(" named ")
+        .append(name)
+        .append(" armed with a ")
+        .append(weapon != null ? weapon : spell != null ? spell : "with nothing")
+        .append(abilities != null ? " and wielding " + abilities + " abilities" : "")
+        .append('.')
+        .toString();
   }
 }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +24,23 @@
  */
 package com.iluwatar.event.aggregator;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.Arrays;
+import org.junit.jupiter.api.Test;
 
-/**
- * Date: 12/12/15 - 2:12 PM
- *
- * @author Jeroen Meulemeester
- */
-public class WeekdayTest {
+/** WeekdayTest */
+class WeekdayTest {
 
   @Test
-  public void testToString() throws Exception {
-    for (final Weekday weekday : Weekday.values()) {
-      final String toString = weekday.toString();
-      assertNotNull(toString);
-      assertEquals(weekday.name(), toString.toUpperCase());
-    }
+  void testToString() {
+    Arrays.stream(Weekday.values())
+        .forEach(
+            weekday -> {
+              final String toString = weekday.toString();
+              assertNotNull(toString);
+              assertEquals(weekday.name(), toString.toUpperCase());
+            });
   }
-
 }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,39 +24,24 @@
  */
 package com.iluwatar.interpreter;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.provider.Arguments;
 
-import java.util.List;
-
-/**
- * Date: 12/14/15 - 12:08 PM
- *
- * @author Jeroen Meulemeester
- */
-@RunWith(Parameterized.class)
-public class PlusExpressionTest extends ExpressionTest<PlusExpression> {
+/** PlusExpressionTest */
+class PlusExpressionTest extends ExpressionTest<PlusExpression> {
 
   /**
    * Create a new set of test entries with the expected result
    *
    * @return The list of parameters used during this test
    */
-  @Parameters
-  public static List<Object[]> data() {
-    return prepareParameters((f, s) -> f + s);
+  @Override
+  public Stream<Arguments> expressionProvider() {
+    return prepareParameters(Integer::sum);
   }
 
-  /**
-   * Create a new test instance using the given test parameters and expected result
-   *
-   * @param first  The first expression parameter
-   * @param second The second expression parameter
-   * @param result The expected result
-   */
-  public PlusExpressionTest(final NumberExpression first, final NumberExpression second, final int result) {
-    super(first, second, result, "+", PlusExpression::new);
+  /** Create a new test instance using the given test parameters and expected result */
+  public PlusExpressionTest() {
+    super("+", PlusExpression::new);
   }
-
 }

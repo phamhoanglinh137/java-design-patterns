@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +28,9 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * 
  * PotionFactory is the Flyweight in this example. It minimizes memory use by sharing object
  * instances. It holds a map of potion instances and new potions are created only when none of the
  * type already exists.
- * 
  */
 public class PotionFactory {
 
@@ -41,31 +41,18 @@ public class PotionFactory {
   }
 
   Potion createPotion(PotionType type) {
-    Potion potion = potions.get(type);
+    var potion = potions.get(type);
     if (potion == null) {
       switch (type) {
-        case HEALING:
-          potion = new HealingPotion();
-          potions.put(type, potion);
-          break;
-        case HOLY_WATER:
-          potion = new HolyWaterPotion();
-          potions.put(type, potion);
-          break;
-        case INVISIBILITY:
-          potion = new InvisibilityPotion();
-          potions.put(type, potion);
-          break;
-        case POISON:
-          potion = new PoisonPotion();
-          potions.put(type, potion);
-          break;
-        case STRENGTH:
-          potion = new StrengthPotion();
-          potions.put(type, potion);
-          break;
-        default:
-          break;
+        case HEALING -> potion = new HealingPotion();
+        case HOLY_WATER -> potion = new HolyWaterPotion();
+        case INVISIBILITY -> potion = new InvisibilityPotion();
+        case POISON -> potion = new PoisonPotion();
+        case STRENGTH -> potion = new StrengthPotion();
+        default -> {}
+      }
+      if (potion != null) {
+        potions.put(type, potion);
       }
     }
     return potion;

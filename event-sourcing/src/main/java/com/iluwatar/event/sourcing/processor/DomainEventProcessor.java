@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,15 +27,18 @@ package com.iluwatar.event.sourcing.processor;
 import com.iluwatar.event.sourcing.event.DomainEvent;
 
 /**
- * This is the implementation of event processor.
- * All events are processed by this class.
- * This processor uses processorJournal to persist and recover events.
+ * This is the implementation of event processor. All events are processed by this class. This
+ * processor uses eventJournal to persist and recover events.
  *
- * Created by Serdar Hamzaogullari on 06.08.2017.
+ * <p>Created by Serdar Hamzaogullari on 06.08.2017.
  */
 public class DomainEventProcessor {
 
-  private final JsonFileJournal processorJournal = new JsonFileJournal();
+  private final EventJournal eventJournal;
+
+  public DomainEventProcessor(EventJournal eventJournal) {
+    this.eventJournal = eventJournal;
+  }
 
   /**
    * Process.
@@ -42,28 +47,19 @@ public class DomainEventProcessor {
    */
   public void process(DomainEvent domainEvent) {
     domainEvent.process();
-    processorJournal.write(domainEvent);
+    eventJournal.write(domainEvent);
   }
 
-  /**
-   * Reset.
-   */
+  /** Reset. */
   public void reset() {
-    processorJournal.reset();
+    eventJournal.reset();
   }
 
-  /**
-   * Recover.
-   */
+  /** Recover. */
   public void recover() {
     DomainEvent domainEvent;
-    while (true) {
-      domainEvent = processorJournal.readNext();
-      if (domainEvent == null) {
-        break;
-      } else {
-        domainEvent.process();
-      }
+    while ((domainEvent = eventJournal.readNext()) != null) {
+      domainEvent.process();
     }
   }
 }

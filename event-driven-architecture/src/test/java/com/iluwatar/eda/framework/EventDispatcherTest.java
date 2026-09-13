@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,49 +24,45 @@
  */
 package com.iluwatar.eda.framework;
 
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+
 import com.iluwatar.eda.event.UserCreatedEvent;
 import com.iluwatar.eda.event.UserUpdatedEvent;
 import com.iluwatar.eda.handler.UserCreatedEventHandler;
 import com.iluwatar.eda.handler.UserUpdatedEventHandler;
 import com.iluwatar.eda.model.User;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
-
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-
-/**
- * Event Dispatcher unit tests to assert and verify correct event dispatcher behaviour
- */
-public class EventDispatcherTest {
+/** Event Dispatcher unit tests to assert and verify correct event dispatcher behaviour */
+class EventDispatcherTest {
 
   /**
    * This unit test should register events and event handlers correctly with the event dispatcher
    * and events should be dispatched accordingly.
    */
   @Test
-  public void testEventDriverPattern() {
+  void testEventDriverPattern() {
 
-    EventDispatcher dispatcher = spy(new EventDispatcher());
-    UserCreatedEventHandler userCreatedEventHandler = spy(new UserCreatedEventHandler());
-    UserUpdatedEventHandler userUpdatedEventHandler = spy(new UserUpdatedEventHandler());
+    var dispatcher = spy(new EventDispatcher());
+    var userCreatedEventHandler = spy(new UserCreatedEventHandler());
+    var userUpdatedEventHandler = spy(new UserUpdatedEventHandler());
     dispatcher.registerHandler(UserCreatedEvent.class, userCreatedEventHandler);
     dispatcher.registerHandler(UserUpdatedEvent.class, userUpdatedEventHandler);
 
-    User user = new User("iluwatar");
+    var user = new User("iluwatar");
 
-    UserCreatedEvent userCreatedEvent = new UserCreatedEvent(user);
-    UserUpdatedEvent userUpdatedEvent = new UserUpdatedEvent(user);
+    var userCreatedEvent = new UserCreatedEvent(user);
+    var userUpdatedEvent = new UserUpdatedEvent(user);
 
-    //fire a userCreatedEvent and verify that userCreatedEventHandler has been invoked.
+    // fire a userCreatedEvent and verify that userCreatedEventHandler has been invoked.
     dispatcher.dispatch(userCreatedEvent);
     verify(userCreatedEventHandler).onEvent(userCreatedEvent);
     verify(dispatcher).dispatch(userCreatedEvent);
 
-    //fire a userCreatedEvent and verify that userUpdatedEventHandler has been invoked.
+    // fire a userCreatedEvent and verify that userUpdatedEventHandler has been invoked.
     dispatcher.dispatch(userUpdatedEvent);
     verify(userUpdatedEventHandler).onEvent(userUpdatedEvent);
     verify(dispatcher).dispatch(userUpdatedEvent);
   }
-
 }

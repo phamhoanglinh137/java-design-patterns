@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +25,11 @@
 package com.iluwatar.poison.pill;
 
 import com.iluwatar.poison.pill.Message.Headers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * Class responsible for receiving and handling submitted to the queue messages
- */
+/** Class responsible for receiving and handling submitted to the queue messages. */
+@Slf4j
 public class Consumer {
-  
-  private static final Logger LOGGER = LoggerFactory.getLogger(Consumer.class);
 
   private final MqSubscribePoint queue;
   private final String name;
@@ -41,27 +39,23 @@ public class Consumer {
     this.queue = queue;
   }
 
-  /**
-   * Consume message
-   */
+  /** Consume message. */
   public void consume() {
     while (true) {
-      Message msg;
       try {
-        msg = queue.take();
+        var msg = queue.take();
         if (Message.POISON_PILL.equals(msg)) {
           LOGGER.info("Consumer {} receive request to terminate.", name);
           break;
         }
+        var sender = msg.getHeader(Headers.SENDER);
+        var body = msg.getBody();
+        LOGGER.info("Message [{}] from [{}] received by [{}]", body, sender, name);
       } catch (InterruptedException e) {
         // allow thread to exit
         LOGGER.error("Exception caught.", e);
         return;
       }
-
-      String sender = msg.getHeader(Headers.SENDER);
-      String body = msg.getBody();
-      LOGGER.info("Message [{}] from [{}] received by [{}]", body, sender, name);
     }
   }
 }

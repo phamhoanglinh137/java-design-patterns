@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +24,13 @@
  */
 package com.iluwatar.prototype;
 
-/**
- * 
- * Mage
- *
- */
-public abstract class Mage extends Prototype {
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-  @Override
-  public abstract Mage clone() throws CloneNotSupportedException;
+/** Mage. */
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+public abstract class Mage extends Prototype<Mage> {
 
+  public Mage(Mage source) {}
 }

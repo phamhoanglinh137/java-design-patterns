@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,43 +24,24 @@
  */
 package com.iluwatar.observer.generic;
 
-import com.iluwatar.observer.Hobbits;
-import com.iluwatar.observer.WeatherObserverTest;
 import com.iluwatar.observer.WeatherType;
-
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Date: 12/27/15 - 12:07 PM
- *
- * @author Jeroen Meulemeester
- */
-@RunWith(Parameterized.class)
-public class GHobbitsTest extends ObserverTest<GHobbits> {
+/** GHobbitsTest. */
+class GHobbitsTest extends ObserverTest<GenHobbits> {
 
-  @Parameterized.Parameters
-  public static Collection<Object[]> data() {
-    final List<Object[]> testData = new ArrayList<>();
-    testData.add(new Object[]{WeatherType.SUNNY, "The happy hobbits bade in the warm sun."});
-    testData.add(new Object[]{WeatherType.RAINY, "The hobbits look for cover from the rain."});
-    testData.add(new Object[]{WeatherType.WINDY, "The hobbits hold their hats tightly in the windy weather."});
-    testData.add(new Object[]{WeatherType.COLD, "The hobbits are shivering in the cold weather."});
-    return testData;
+  @Override
+  public Collection<Object[]> dataProvider() {
+    return List.of(
+        new Object[] {WeatherType.SUNNY, "The hobbits are facing Sunny weather now"},
+        new Object[] {WeatherType.RAINY, "The hobbits are facing Rainy weather now"},
+        new Object[] {WeatherType.WINDY, "The hobbits are facing Windy weather now"},
+        new Object[] {WeatherType.COLD, "The hobbits are facing Cold weather now"});
   }
 
-  /**
-   * Create a new test with the given weather and expected response
-   *
-   * @param weather  The weather that should be unleashed on the observer
-   * @param response The expected response from the observer
-   */
-  public GHobbitsTest(final WeatherType weather, final String response) {
-    super(weather, response, GHobbits::new);
+  /** Create a new test with the given weather and expected response. */
+  public GHobbitsTest() {
+    super(GenHobbits::new);
   }
-
 }

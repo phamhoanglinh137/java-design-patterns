@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,57 +24,28 @@
  */
 package com.iluwatar.prototype;
 
-/**
- * 
- * Concrete factory class.
- * 
- */
+import lombok.RequiredArgsConstructor;
+
+/** Concrete factory class. */
+@RequiredArgsConstructor
 public class HeroFactoryImpl implements HeroFactory {
 
-  private Mage mage;
-  private Warlord warlord;
-  private Beast beast;
+  private final Mage mage;
+  private final Warlord warlord;
+  private final Beast beast;
 
-  /**
-   * Constructor
-   */
-  public HeroFactoryImpl(Mage mage, Warlord warlord, Beast beast) {
-    this.mage = mage;
-    this.warlord = warlord;
-    this.beast = beast;
-  }
-
-  /**
-   * Create mage
-   */
+  /** Create mage. */
   public Mage createMage() {
-    try {
-      return mage.clone();
-    } catch (CloneNotSupportedException e) {
-      return null;
-    }
+    return mage.copy();
   }
 
-  /**
-   * Create warlord
-   */
+  /** Create warlord. */
   public Warlord createWarlord() {
-    try {
-      return warlord.clone();
-    } catch (CloneNotSupportedException e) {
-      return null;
-    }
+    return warlord.copy();
   }
 
-  /**
-   * Create beast
-   */
+  /** Create beast. */
   public Beast createBeast() {
-    try {
-      return beast.clone();
-    } catch (CloneNotSupportedException e) {
-      return null;
-    }
+    return beast.copy();
   }
-
 }

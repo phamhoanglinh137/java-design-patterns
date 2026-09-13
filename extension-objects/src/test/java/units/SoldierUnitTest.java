@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,26 +24,20 @@
  */
 package units;
 
-import abstractextensions.SoldierExtension;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.Test;
 
-/**
- * Created by Srdjan on 03-May-17.
- */
-public class SoldierUnitTest {
+/** Created by Srdjan on 03-May-17. */
+class SoldierUnitTest {
+
   @Test
-  public void getUnitExtension() throws Exception {
+  void getUnitExtension() {
+    final var unit = new SoldierUnit("SoldierUnitName");
 
-    final Unit unit = new SoldierUnit("SoldierUnitName");
-
-    assertNotNull((SoldierExtension) unit.getUnitExtension("SoldierExtension"));
+    assertNotNull(unit.getUnitExtension("SoldierExtension"));
     assertNull(unit.getUnitExtension("SergeantExtension"));
     assertNull(unit.getUnitExtension("CommanderExtension"));
-
-
   }
-
 }

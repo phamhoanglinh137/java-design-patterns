@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,30 +24,23 @@
  */
 package com.iluwatar.servicelayer.magic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.iluwatar.servicelayer.spell.Spell;
 import com.iluwatar.servicelayer.spell.SpellDao;
 import com.iluwatar.servicelayer.spellbook.Spellbook;
 import com.iluwatar.servicelayer.spellbook.SpellbookDao;
 import com.iluwatar.servicelayer.wizard.Wizard;
 import com.iluwatar.servicelayer.wizard.WizardDao;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * 
- * Service implementation.
- *
- */
+/** Service implementation. */
 public class MagicServiceImpl implements MagicService {
 
-  private WizardDao wizardDao;
-  private SpellbookDao spellbookDao;
-  private SpellDao spellDao;
+  private final WizardDao wizardDao;
+  private final SpellbookDao spellbookDao;
+  private final SpellDao spellDao;
 
-  /**
-   * Constructor
-   */
+  /** Constructor. */
   public MagicServiceImpl(WizardDao wizardDao, SpellbookDao spellbookDao, SpellDao spellDao) {
     this.wizardDao = wizardDao;
     this.spellbookDao = spellbookDao;
@@ -69,14 +64,14 @@ public class MagicServiceImpl implements MagicService {
 
   @Override
   public List<Wizard> findWizardsWithSpellbook(String name) {
-    Spellbook spellbook = spellbookDao.findByName(name);
+    var spellbook = spellbookDao.findByName(name);
     return new ArrayList<>(spellbook.getWizards());
   }
 
   @Override
   public List<Wizard> findWizardsWithSpell(String name) {
-    Spell spell = spellDao.findByName(name);
-    Spellbook spellbook = spell.getSpellbook();
+    var spell = spellDao.findByName(name);
+    var spellbook = spell.getSpellbook();
     return new ArrayList<>(spellbook.getWizards());
   }
 }

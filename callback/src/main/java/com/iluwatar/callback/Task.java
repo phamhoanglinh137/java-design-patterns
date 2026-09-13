@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +24,31 @@
  */
 package com.iluwatar.callback;
 
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
 /**
- * 
- * Template-method class for callback hook execution
- * 
+ * Template-method class for callback hook execution.
+ *
+ * <p>Provides both synchronous and asynchronous execution with callback support.
  */
 public abstract class Task {
 
-  /**
-   * Execute with callback
-   */
-  public final void executeWith(Callback callback) {
+  /** Execute the task and call the callback method synchronously upon completion. */
+  final void executeWith(Callback callback) {
     execute();
-    if (callback != null) {
-      callback.call();
-    }
+    Optional.ofNullable(callback).ifPresent(Callback::call);
   }
 
+  /** Execute the task and asynchronously call the callback method upon completion. */
+  final CompletableFuture<Void> executeAsyncWith(Callback callback) {
+    return CompletableFuture.runAsync(
+        () -> {
+          execute();
+          Optional.ofNullable(callback).ifPresent(Callback::call);
+        });
+  }
+
+  /** Actual work to be implemented by subclasses. */
   public abstract void execute();
 }

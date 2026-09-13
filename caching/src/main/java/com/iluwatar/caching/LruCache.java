@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,54 +24,77 @@
  */
 package com.iluwatar.caching;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- *
  * Data structure/implementation of the application's cache. The data structure consists of a hash
  * table attached with a doubly linked-list. The linked-list helps in capturing and maintaining the
  * LRU data in the cache. When a data is queried (from the cache), added (to the cache), or updated,
  * the data is moved to the front of the list to depict itself as the most-recently-used data. The
  * LRU data is always at the end of the list.
- *
  */
+@Slf4j
 public class LruCache {
+  /** Static class Node. */
+  static class Node {
+    /** user id. */
+    private final String userId;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(LruCache.class);
+    /** User Account. */
+    private UserAccount userAccount;
 
-  class Node {
-    String userId;
-    UserAccount userAccount;
-    Node previous;
-    Node next;
+    /** previous. */
+    private Node previous;
 
-    public Node(String userId, UserAccount userAccount) {
-      this.userId = userId;
-      this.userAccount = userAccount;
+    /** next. */
+    private Node next;
+
+    /**
+     * Node definition.
+     *
+     * @param id String
+     * @param account {@link UserAccount}
+     */
+    Node(final String id, final UserAccount account) {
+      this.userId = id;
+      this.userAccount = account;
     }
   }
 
-  int capacity;
-  Map<String, Node> cache = new HashMap<>();
-  Node head;
-  Node end;
+  /** Capacity of Cache. */
+  private int capacity;
 
-  public LruCache(int capacity) {
-    this.capacity = capacity;
+  /** Cache {@link HashMap}. */
+  private Map<String, Node> cache = new HashMap<>();
+
+  /** Head. */
+  private Node head;
+
+  /** End. */
+  private Node end;
+
+  /**
+   * Constructor.
+   *
+   * @param cap Integer.
+   */
+  public LruCache(final int cap) {
+    this.capacity = cap;
   }
 
   /**
-   * Get user account
+   * Get user account.
+   *
+   * @param userId String
+   * @return {@link UserAccount}
    */
-  public UserAccount get(String userId) {
+  public UserAccount get(final String userId) {
     if (cache.containsKey(userId)) {
-      Node node = cache.get(userId);
+      var node = cache.get(userId);
       remove(node);
       setHead(node);
       return node.userAccount;
@@ -79,8 +104,10 @@ public class LruCache {
 
   /**
    * Remove node from linked list.
+   *
+   * @param node {@link Node}
    */
-  public void remove(Node node) {
+  public void remove(final Node node) {
     if (node.previous != null) {
       node.previous.next = node.next;
     } else {
@@ -95,8 +122,10 @@ public class LruCache {
 
   /**
    * Move node to the front of the list.
+   *
+   * @param node {@link Node}
    */
-  public void setHead(Node node) {
+  public void setHead(final Node node) {
     node.next = head;
     node.previous = null;
     if (head != null) {
@@ -109,16 +138,19 @@ public class LruCache {
   }
 
   /**
-   * Set user account
+   * Set user account.
+   *
+   * @param userAccount {@link UserAccount}
+   * @param userId {@link String}
    */
-  public void set(String userId, UserAccount userAccount) {
+  public void set(final String userId, final UserAccount userAccount) {
     if (cache.containsKey(userId)) {
-      Node old = cache.get(userId);
+      var old = cache.get(userId);
       old.userAccount = userAccount;
       remove(old);
       setHead(old);
     } else {
-      Node newNode = new Node(userId, userAccount);
+      var newNode = new Node(userId, userAccount);
       if (cache.size() >= capacity) {
         LOGGER.info("# Cache is FULL! Removing {} from cache...", end.userId);
         cache.remove(end.userId); // remove LRU data from cache.
@@ -131,32 +163,48 @@ public class LruCache {
     }
   }
 
-  public boolean contains(String userId) {
+  /**
+   * Check if Cache contains the userId.
+   *
+   * @param userId {@link String}
+   * @return boolean
+   */
+  public boolean contains(final String userId) {
     return cache.containsKey(userId);
   }
 
   /**
-   * Invalidate cache for user
+   * Invalidate cache for user.
+   *
+   * @param userId {@link String}
    */
-  public void invalidate(String userId) {
-    Node toBeRemoved = cache.remove(userId);
+  public void invalidate(final String userId) {
+    var toBeRemoved = cache.remove(userId);
     if (toBeRemoved != null) {
-      LOGGER.info("# {} has been updated! Removing older version from cache...", userId);
+      LOGGER.info("# {} has been updated! " + "Removing older version from cache...", userId);
       remove(toBeRemoved);
     }
   }
 
+  /**
+   * Check if the cache is full.
+   *
+   * @return boolean
+   */
   public boolean isFull() {
     return cache.size() >= capacity;
   }
 
+  /**
+   * Get LRU data.
+   *
+   * @return {@link UserAccount}
+   */
   public UserAccount getLruData() {
     return end.userAccount;
   }
 
-  /**
-   * Clear cache
-   */
+  /** Clear cache. */
   public void clear() {
     head = null;
     end = null;
@@ -165,10 +213,12 @@ public class LruCache {
 
   /**
    * Returns cache data in list form.
+   *
+   * @return {@link List}
    */
   public List<UserAccount> getCacheDataInListForm() {
-    List<UserAccount> listOfCacheData = new ArrayList<>();
-    Node temp = head;
+    var listOfCacheData = new ArrayList<UserAccount>();
+    var temp = head;
     while (temp != null) {
       listOfCacheData.add(temp.userAccount);
       temp = temp.next;
@@ -177,12 +227,16 @@ public class LruCache {
   }
 
   /**
-   * Set cache capacity
+   * Set cache capacity.
+   *
+   * @param newCapacity int
    */
-  public void setCapacity(int newCapacity) {
+  public void setCapacity(final int newCapacity) {
     if (capacity > newCapacity) {
-      clear(); // Behavior can be modified to accommodate for decrease in cache size. For now, we'll
-               // just clear the cache.
+      // Behavior can be modified to accommodate
+      // for decrease in cache size. For now, we'll
+      clear();
+      // just clear the cache.
     } else {
       this.capacity = newCapacity;
     }

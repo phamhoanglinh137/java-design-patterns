@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +24,21 @@
  */
 package com.iluwatar.event.sourcing.event;
 
-import com.iluwatar.event.sourcing.domain.Account;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iluwatar.event.sourcing.state.AccountAggregate;
 import java.math.BigDecimal;
+import java.util.Optional;
+import lombok.Getter;
 
 /**
- * This is the class that implements money transfer event.
- * Holds the necessary info for a money transfer event.
- * Implements the process function that finds the event related
- * domain objects and calls the related domain object's handle event functions
+ * This is the class that implements money transfer event. Holds the necessary info for a money
+ * transfer event. Implements the process function that finds the event-related domain objects and
+ * calls the related domain object's handle event functions
  *
- * Created by Serdar Hamzaogullari on 06.08.2017.
+ * <p>Created by Serdar Hamzaogullari on 06.08.2017.
  */
+@Getter
 public class MoneyTransferEvent extends DomainEvent {
 
   private final BigDecimal money;
@@ -49,52 +54,27 @@ public class MoneyTransferEvent extends DomainEvent {
    * @param accountNoFrom the account no from
    * @param accountNoTo the account no to
    */
-  public MoneyTransferEvent(long sequenceId, long createdTime, BigDecimal money, int accountNoFrom,
-      int accountNoTo) {
+  @JsonCreator
+  public MoneyTransferEvent(
+      @JsonProperty("sequenceId") long sequenceId,
+      @JsonProperty("createdTime") long createdTime,
+      @JsonProperty("money") BigDecimal money,
+      @JsonProperty("accountNoFrom") int accountNoFrom,
+      @JsonProperty("accountNoTo") int accountNoTo) {
     super(sequenceId, createdTime, "MoneyTransferEvent");
     this.money = money;
     this.accountNoFrom = accountNoFrom;
     this.accountNoTo = accountNoTo;
   }
 
-  /**
-   * Gets money.
-   *
-   * @return the money
-   */
-  public BigDecimal getMoney() {
-    return money;
-  }
-
-  /**
-   * Gets account no which the money comes from.
-   *
-   * @return the account no from
-   */
-  public int getAccountNoFrom() {
-    return accountNoFrom;
-  }
-
-  /**
-   * Gets account no which the money goes to.
-   *
-   * @return the account no to
-   */
-  public int getAccountNoTo() {
-    return accountNoTo;
-  }
-
   @Override
   public void process() {
-    Account accountFrom = AccountAggregate.getAccount(accountNoFrom);
-    if (accountFrom == null) {
-      throw new RuntimeException("Account not found " + accountNoFrom);
-    }
-    Account accountTo = AccountAggregate.getAccount(accountNoTo);
-    if (accountTo == null) {
-      throw new RuntimeException("Account not found" + accountTo);
-    }
-
+    var accountFrom =
+        Optional.ofNullable(AccountAggregate.getAccount(accountNoFrom))
+            .orElseThrow(() -> new RuntimeException("Account not found " + accountNoFrom));
+    var accountTo =
+        Optional.ofNullable(AccountAggregate.getAccount(accountNoTo))
+            .orElseThrow(() -> new RuntimeException("Account not found " + accountNoTo));
     accountFrom.handleTransferFromEvent(this);
     accountTo.handleTransferToEvent(this);
   }

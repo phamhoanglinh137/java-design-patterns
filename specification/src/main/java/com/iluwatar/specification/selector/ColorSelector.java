@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,26 +24,20 @@
  */
 package com.iluwatar.specification.selector;
 
-import java.util.function.Predicate;
-
 import com.iluwatar.specification.creature.Creature;
 import com.iluwatar.specification.property.Color;
 
-/**
- * 
- * Color selector.
- *
- */
-public class ColorSelector implements Predicate<Creature> {
+/** Color selector. */
+public class ColorSelector extends AbstractSelector<Creature> {
 
-  private final Color c;
+  private final Color color;
 
   public ColorSelector(Color c) {
-    this.c = c;
+    this.color = c;
   }
 
   @Override
   public boolean test(Creature t) {
-    return t.getColor().equals(c);
+    return t.getColor().equals(color);
   }
 }

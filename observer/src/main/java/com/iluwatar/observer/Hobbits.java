@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,35 +24,14 @@
  */
 package com.iluwatar.observer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * 
- * Hobbits
- *
- */
+/** Hobbits. */
+@Slf4j
 public class Hobbits implements WeatherObserver {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(Hobbits.class);
 
   @Override
   public void update(WeatherType currentWeather) {
-    switch (currentWeather) {
-      case COLD:
-        LOGGER.info("The hobbits are shivering in the cold weather.");
-        break;
-      case RAINY:
-        LOGGER.info("The hobbits look for cover from the rain.");
-        break;
-      case SUNNY:
-        LOGGER.info("The happy hobbits bade in the warm sun.");
-        break;
-      case WINDY:
-        LOGGER.info("The hobbits hold their hats tightly in the windy weather.");
-        break;
-      default:
-        break;
-    }
+    LOGGER.info("The hobbits are facing {} weather now", currentWeather.getDescription());
   }
 }

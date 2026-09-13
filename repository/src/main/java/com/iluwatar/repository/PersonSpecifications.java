@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,26 +24,21 @@
  */
 package com.iluwatar.repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
-/**
- * Helper class, includes vary Specification as the abstraction of sql query criteria
- */
+/** Helper class, includes vary Specification as the abstraction of sql query criteria. */
 public class PersonSpecifications {
 
-  /**
-   * Specifications stating the Between (From - To) Age Specification
-   */
+  /** Specifications stating the Between (From - To) Age Specification. */
   public static class AgeBetweenSpec implements Specification<Person> {
 
-    private int from;
+    private final int from;
 
-    private int to;
+    private final int to;
 
     public AgeBetweenSpec(int from, int to) {
       this.from = from;
@@ -50,33 +47,22 @@ public class PersonSpecifications {
 
     @Override
     public Predicate toPredicate(Root<Person> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-
       return cb.between(root.get("age"), from, to);
-
     }
-
   }
 
-  /**
-   * Name specification
-   *
-   */
+  /** Name specification. */
   public static class NameEqualSpec implements Specification<Person> {
 
-    public String name;
+    public final String name;
 
     public NameEqualSpec(String name) {
       this.name = name;
     }
 
-    /**
-     * Get predicate
-     */
+    /** Get predicate. */
     public Predicate toPredicate(Root<Person> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-
       return cb.equal(root.get("name"), this.name);
-
     }
   }
-
 }

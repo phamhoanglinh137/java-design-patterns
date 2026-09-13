@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +24,16 @@
  */
 package com.iluwatar.model.view.controller;
 
-/**
- * 
- * Fatigue enumeration
- *
- */
+import lombok.AllArgsConstructor;
+
+/** Fatigue enumeration. */
+@AllArgsConstructor
 public enum Fatigue {
+  ALERT("alert"),
+  TIRED("tired"),
+  SLEEPING("sleeping");
 
-  ALERT("alert"), TIRED("tired"), SLEEPING("sleeping");
-
-  private String title;
-
-  Fatigue(String title) {
-    this.title = title;
-  }
+  private final String title;
 
   @Override
   public String toString() {

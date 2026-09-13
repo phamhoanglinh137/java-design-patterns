@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,17 +22,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.iluwatar.mute;
 
-/**
- * A runnable which may throw exception on execution.
- *
- */
+/** A runnable which may throw exception on execution. */
 @FunctionalInterface
 public interface CheckedRunnable {
   /**
    * Same as {@link Runnable#run()} with a possibility of exception in execution.
+   *
    * @throws Exception if any exception occurs.
    */
   void run() throws Exception;

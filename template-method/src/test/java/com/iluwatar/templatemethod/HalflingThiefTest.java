@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,51 +24,34 @@
  */
 package com.iluwatar.templatemethod;
 
-import org.junit.Test;
-
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-/**
- * Date: 12/29/15 - 18:15 PM
- *
- * @author Jeroen Meulemeester
- */
-public class HalflingThiefTest {
+import org.junit.jupiter.api.Test;
 
-  /**
-   * Verify if the thief uses the provided stealing method
-   */
+/** HalflingThiefTest */
+class HalflingThiefTest {
+
+  /** Verify if the thief uses the provided stealing method */
   @Test
-  public void testSteal() {
-    final StealingMethod method = mock(StealingMethod.class);
-    final HalflingThief thief = new HalflingThief(method);
-
+  void testSteal() {
+    final var method = spy(StealingMethod.class);
+    final var thief = new HalflingThief(method);
     thief.steal();
     verify(method).steal();
-
-    verifyNoMoreInteractions(method);
   }
 
-  /**
-   * Verify if the thief uses the provided stealing method, and the new method after changing it
-   */
+  /** Verify if the thief uses the provided stealing method, and the new method after changing it */
   @Test
-  public void testChangeMethod() {
-    final StealingMethod initialMethod = mock(StealingMethod.class);
-    final HalflingThief thief = new HalflingThief(initialMethod);
-
+  void testChangeMethod() {
+    final var initialMethod = spy(StealingMethod.class);
+    final var thief = new HalflingThief(initialMethod);
     thief.steal();
     verify(initialMethod).steal();
 
-    final StealingMethod newMethod = mock(StealingMethod.class);
+    final var newMethod = spy(StealingMethod.class);
     thief.changeMethod(newMethod);
-
     thief.steal();
     verify(newMethod).steal();
-
-    verifyNoMoreInteractions(initialMethod, newMethod);
-
   }
 }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +25,28 @@
 package com.iluwatar.visitor;
 
 /**
- * 
- * Visitor pattern defines mechanism to apply operations on nodes in hierarchy. New operations can
- * be added without altering the node interface.
- * <p>
- * In this example there is a unit hierarchy beginning from {@link Commander}. This hierarchy is
- * traversed by visitors. {@link SoldierVisitor} applies its operation on {@link Soldier}s,
- * {@link SergeantVisitor} on {@link Sergeant}s and so on.
- * 
+ * Visitor pattern defines a mechanism to apply operations on nodes in a hierarchy. New operations
+ * can be added without altering the node interface.
+ *
+ * <p>In this example there is a unit hierarchy beginning from {@link Commander}. This hierarchy is
+ * traversed by visitors. {@link SoldierVisitor} applies its operation on {@link Soldier}s, {@link
+ * SergeantVisitor} on {@link Sergeant}s and so on.
  */
 public class App {
 
   /**
-   * Program entry point
-   * 
+   * Program entry point.
+   *
    * @param args command line args
    */
   public static void main(String[] args) {
 
-    Commander commander =
-        new Commander(new Sergeant(new Soldier(), new Soldier(), new Soldier()), new Sergeant(
-            new Soldier(), new Soldier(), new Soldier()));
+    var commander =
+        new Commander(
+            new Sergeant(new Soldier(), new Soldier(), new Soldier()),
+            new Sergeant(new Soldier(), new Soldier(), new Soldier()));
     commander.accept(new SoldierVisitor());
     commander.accept(new SergeantVisitor());
     commander.accept(new CommanderVisitor());
-
   }
 }

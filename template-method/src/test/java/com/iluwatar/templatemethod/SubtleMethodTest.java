@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +24,16 @@
  */
 package com.iluwatar.templatemethod;
 
-/**
- * Date: 12/30/15 - 18:19 PM
- *
- * @author Jeroen Meulemeester
- */
-public class SubtleMethodTest extends StealingMethodTest<SubtleMethod> {
+/** SubtleMethodTest */
+class SubtleMethodTest extends StealingMethodTest<SubtleMethod> {
 
-  /**
-   * Create a new test for the {@link SubtleMethod}
-   */
+  /** Create a new test for the {@link SubtleMethod} */
   public SubtleMethodTest() {
     super(
         new SubtleMethod(),
         "shop keeper",
         "The target has been chosen as shop keeper.",
         "Approach the shop keeper with tears running and hug him!",
-        "While in close contact grab the shop keeper's wallet."
-    );
+        "While in close contact grab the shop keeper's wallet.");
   }
-
 }

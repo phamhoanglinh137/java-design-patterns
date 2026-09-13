@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,46 +24,34 @@
  */
 package com.iluwatar.servant;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
 import java.util.List;
-
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Servant offers some functionality to a group of classes without defining that functionality in
  * each of them. A Servant is a class whose instance provides methods that take care of a desired
  * service, while objects for which the servant does something, are taken as parameters.
- * <p>
- * In this example {@link Servant} is serving {@link King} and {@link Queen}.
  *
+ * <p>In this example {@link Servant} is serving {@link King} and {@link Queen}.
  */
+@Slf4j
 public class App {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+  private static final Servant jenkins = new Servant("Jenkins");
+  private static final Servant travis = new Servant("Travis");
 
-  static Servant jenkins = new Servant("Jenkins");
-  static Servant travis = new Servant("Travis");
-
-  /**
-   * Program entry point
-   */
+  /** Program entry point. */
   public static void main(String[] args) {
     scenario(jenkins, 1);
     scenario(travis, 0);
   }
 
-  /**
-   * Can add a List with enum Actions for variable scenarios
-   */
+  /** Can add a List with enum Actions for variable scenarios. */
   public static void scenario(Servant servant, int compliment) {
-    King k = new King();
-    Queen q = new Queen();
+    var k = new King();
+    var q = new Queen();
 
-    List<Royalty> guests = new ArrayList<>();
-    guests.add(k);
-    guests.add(q);
+    var guests = List.of(k, q);
 
     // feed
     servant.feed(k);
@@ -73,9 +63,7 @@ public class App {
     servant.giveCompliments(guests.get(compliment));
 
     // outcome of the night
-    for (Royalty r : guests) {
-      r.changeMood();
-    }
+    guests.forEach(Royalty::changeMood);
 
     // check your luck
     if (servant.checkIfYouWillBeHanged(guests)) {

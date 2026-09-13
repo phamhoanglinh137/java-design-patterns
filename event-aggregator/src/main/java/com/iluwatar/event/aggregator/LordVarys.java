@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +24,27 @@
  */
 package com.iluwatar.event.aggregator;
 
-/**
- * 
- * LordVarys produces events.
- *
- */
-public class LordVarys extends EventEmitter {
+import lombok.extern.slf4j.Slf4j;
 
-  public LordVarys() {
-    super();
-  }
+/** LordVarys produces events. */
+@Slf4j
+public class LordVarys extends EventEmitter implements EventObserver {
 
-  public LordVarys(EventObserver obs) {
-    super(obs);
+  public LordVarys() {}
+
+  public LordVarys(EventObserver obs, Event e) {
+    super(obs, e);
   }
 
   @Override
   public void timePasses(Weekday day) {
-    if (day.equals(Weekday.SATURDAY)) {
+    if (day == Weekday.SATURDAY) {
       notifyObservers(Event.TRAITOR_DETECTED);
     }
+  }
+
+  @Override
+  public void onEvent(Event e) {
+    notifyObservers(e);
   }
 }

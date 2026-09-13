@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +24,16 @@
  */
 package com.iluwatar.intercepting.filter;
 
-/**
- * Order class carries the order data.
- *
- */
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/** Order class carries the order data. */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
 
   private String name;
@@ -33,57 +41,4 @@ public class Order {
   private String address;
   private String depositNumber;
   private String orderItem;
-
-  public Order() {}
-
-  /**
-   * Constructor
-   */
-  public Order(String name, String contactNumber, String address, String depositNumber, String order) {
-    this.name = name;
-    this.contactNumber = contactNumber;
-    this.address = address;
-    this.depositNumber = depositNumber;
-    this.orderItem = order;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getContactNumber() {
-    return contactNumber;
-  }
-
-  public void setContactNumber(String contactNumber) {
-    this.contactNumber = contactNumber;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public String getDepositNumber() {
-    return depositNumber;
-  }
-
-  public void setDepositNumber(String depositNumber) {
-    this.depositNumber = depositNumber;
-  }
-
-  public String getOrderItem() {
-    return orderItem;
-  }
-
-  public void setOrderItem(String order) {
-    this.orderItem = order;
-  }
 }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,9 +24,8 @@
  */
 package com.iluwatar.event.sourcing.processor;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iluwatar.event.sourcing.event.AccountCreateEvent;
 import com.iluwatar.event.sourcing.event.DomainEvent;
 import com.iluwatar.event.sourcing.event.MoneyDepositEvent;
@@ -37,31 +38,28 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is the implementation of event journal.
- * This implementation serialize/deserialize the events with JSON
- * and writes/reads them on a Journal.json file at the working directory.
+ * This is the implementation of event journal. This implementation serialize/deserialize the events
+ * with JSON and writes/reads them on a Journal.json file at the working directory.
  *
- * Created by Serdar Hamzaogullari on 06.08.2017.
+ * <p>Created by Serdar Hamzaogullari on 06.08.2017.
  */
-public class JsonFileJournal {
+public class JsonFileJournal extends EventJournal {
 
-  private final File aFile;
   private final List<String> events = new ArrayList<>();
   private int index = 0;
 
-  /**
-   * Instantiates a new Json file journal.
-   */
+  /** Instantiates a new Json file journal. */
   public JsonFileJournal() {
-    aFile = new File("Journal.json");
-    if (aFile.exists()) {
-      try (BufferedReader input = new BufferedReader(
-          new InputStreamReader(new FileInputStream(aFile), "UTF-8"))) {
+    file = new File("Journal.json");
+    if (file.exists()) {
+      try (var input =
+          new BufferedReader(
+              new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
         String line;
         while ((line = input.readLine()) != null) {
           events.add(line);
@@ -74,45 +72,26 @@ public class JsonFileJournal {
     }
   }
 
-
   /**
    * Write.
    *
    * @param domainEvent the domain event
    */
+  @Override
   public void write(DomainEvent domainEvent) {
-    Gson gson = new Gson();
-    JsonElement jsonElement;
-    if (domainEvent instanceof AccountCreateEvent) {
-      jsonElement = gson.toJsonTree(domainEvent, AccountCreateEvent.class);
-    } else if (domainEvent instanceof MoneyDepositEvent) {
-      jsonElement = gson.toJsonTree(domainEvent, MoneyDepositEvent.class);
-    }  else if (domainEvent instanceof MoneyTransferEvent) {
-      jsonElement = gson.toJsonTree(domainEvent, MoneyTransferEvent.class);
-    } else {
-      throw new RuntimeException("Journal Event not recegnized");
-    }
-
-    try (Writer output = new BufferedWriter(
-        new OutputStreamWriter(new FileOutputStream(aFile, true), "UTF-8"))) {
-      String eventString = jsonElement.toString();
+    var mapper = new ObjectMapper();
+    try (var output =
+        new BufferedWriter(
+            new OutputStreamWriter(new FileOutputStream(file, true), StandardCharsets.UTF_8))) {
+      var eventString = mapper.writeValueAsString(domainEvent);
       output.write(eventString + "\r\n");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-
   /**
-   * Reset.
-   */
-  public void reset() {
-    aFile.delete();
-  }
-
-
-  /**
-   * Read next domain event.
+   * Read the next domain event.
    *
    * @return the domain event
    */
@@ -120,22 +99,23 @@ public class JsonFileJournal {
     if (index >= events.size()) {
       return null;
     }
-    String event = events.get(index);
+    var event = events.get(index);
     index++;
 
-    JsonParser parser = new JsonParser();
-    JsonElement jsonElement = parser.parse(event);
-    String eventClassName = jsonElement.getAsJsonObject().get("eventClassName").getAsString();
-    Gson gson = new Gson();
+    var mapper = new ObjectMapper();
     DomainEvent domainEvent;
-    if (eventClassName.equals("AccountCreateEvent")) {
-      domainEvent = gson.fromJson(jsonElement, AccountCreateEvent.class);
-    } else if (eventClassName.equals("MoneyDepositEvent")) {
-      domainEvent = gson.fromJson(jsonElement, MoneyDepositEvent.class);
-    } else if (eventClassName.equals("MoneyTransferEvent")) {
-      domainEvent = gson.fromJson(jsonElement, MoneyTransferEvent.class);
-    }  else {
-      throw new RuntimeException("Journal Event not recegnized");
+    try {
+      var jsonElement = mapper.readTree(event);
+      var eventClassName = jsonElement.get("eventClassName").asText();
+      domainEvent =
+          switch (eventClassName) {
+            case "AccountCreateEvent" -> mapper.treeToValue(jsonElement, AccountCreateEvent.class);
+            case "MoneyDepositEvent" -> mapper.treeToValue(jsonElement, MoneyDepositEvent.class);
+            case "MoneyTransferEvent" -> mapper.treeToValue(jsonElement, MoneyTransferEvent.class);
+            default -> throw new RuntimeException("Journal Event not recognized");
+          };
+    } catch (JsonProcessingException jsonProcessingException) {
+      throw new RuntimeException("Failed to convert JSON");
     }
 
     domainEvent.setRealTime(false);

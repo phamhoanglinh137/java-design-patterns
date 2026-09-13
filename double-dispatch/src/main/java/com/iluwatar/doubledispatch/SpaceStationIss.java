@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +24,7 @@
  */
 package com.iluwatar.doubledispatch;
 
-/**
- * 
- * Space station ISS game object
- *
- */
+/** Space station ISS game object. */
 public class SpaceStationIss extends SpaceStationMir {
 
   public SpaceStationIss(int left, int top, int right, int bottom) {

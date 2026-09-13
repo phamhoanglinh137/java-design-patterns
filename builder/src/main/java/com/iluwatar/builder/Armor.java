@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +24,17 @@
  */
 package com.iluwatar.builder;
 
-/**
- * 
- * Armor enumeration
- *
- */
+import lombok.AllArgsConstructor;
+
+/** Armor enumeration. */
+@AllArgsConstructor
 public enum Armor {
+  CLOTHES("clothes"),
+  LEATHER("leather"),
+  CHAIN_MAIL("chain mail"),
+  PLATE_MAIL("plate mail");
 
-  CLOTHES("clothes"), LEATHER("leather"), CHAIN_MAIL("chain mail"), PLATE_MAIL("plate mail");
-
-  private String title;
-
-  Armor(String title) {
-    this.title = title;
-  }
+  private final String title;
 
   @Override
   public String toString() {

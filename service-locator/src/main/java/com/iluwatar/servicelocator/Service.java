@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +26,18 @@ package com.iluwatar.servicelocator;
 
 /**
  * This is going to be the parent service interface which we will use to create our services. All
- * services will have a <li>service name</li> <li>unique id</li> <li>execution work flow</li>
- * 
- * @author saifasif
+ * services will have a
  *
+ * <ul>
+ *   <li>service name
+ *   <li>unique id
+ *   <li>execution work flow
+ * </ul>
  */
 public interface Service {
 
   /*
-   * The human readable name of the service
+   * The human-readable name of the service
    */
   String getName();
 

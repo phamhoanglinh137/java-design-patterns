@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +27,10 @@ package com.iluwatar.composite;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 
- * Composite interface.
- * 
- */
+/** Composite interface. */
 public abstract class LetterComposite {
 
-  private List<LetterComposite> children = new ArrayList<>();
+  private final List<LetterComposite> children = new ArrayList<>();
 
   public void add(LetterComposite letter) {
     children.add(letter);
@@ -46,14 +44,10 @@ public abstract class LetterComposite {
 
   protected void printThisAfter() {}
 
-  /**
-   * Print
-   */
+  /** Print. */
   public void print() {
     printThisBefore();
-    for (LetterComposite letter : children) {
-      letter.print();
-    }
+    children.forEach(LetterComposite::print);
     printThisAfter();
   }
 }

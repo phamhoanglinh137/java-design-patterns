@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +24,24 @@
  */
 package com.iluwatar.decorator;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
-/**
- * Tests for {@link ClubbedTroll}
- */
-public class ClubbedTrollTest {
+import org.junit.jupiter.api.Test;
+
+/** Tests for {@link ClubbedTroll} */
+class ClubbedTrollTest {
 
   @Test
-  public void testClubbedTroll() throws Exception {
+  void testClubbedTroll() {
     // Create a normal troll first, but make sure we can spy on it later on.
-    final Troll simpleTroll = spy(new SimpleTroll());
+    final var simpleTroll = spy(new SimpleTroll());
 
     // Now we want to decorate the troll to make it stronger ...
-    final Troll clubbed = new ClubbedTroll(simpleTroll);
+    final var clubbed = new ClubbedTroll(simpleTroll);
     assertEquals(20, clubbed.getAttackPower());
     verify(simpleTroll, times(1)).getAttackPower();
 

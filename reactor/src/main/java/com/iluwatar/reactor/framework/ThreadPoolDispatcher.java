@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +40,7 @@ public class ThreadPoolDispatcher implements Dispatcher {
 
   /**
    * Creates a pooled dispatcher with tunable pool size.
-   * 
+   *
    * @param poolSize number of pooled threads
    */
   public ThreadPoolDispatcher(int poolSize) {
@@ -47,7 +49,7 @@ public class ThreadPoolDispatcher implements Dispatcher {
 
   /**
    * Submits the work of dispatching the read event to worker pool, where it gets picked up by
-   * worker threads. <br/>
+   * worker threads. <br>
    * Note that this is a non-blocking call and returns immediately. It is not guaranteed that the
    * event has been handled by associated handler.
    */
@@ -58,12 +60,14 @@ public class ThreadPoolDispatcher implements Dispatcher {
 
   /**
    * Stops the pool of workers.
-   * 
+   *
    * @throws InterruptedException if interrupted while stopping pool of workers.
    */
   @Override
   public void stop() throws InterruptedException {
     executorService.shutdown();
-    executorService.awaitTermination(4, TimeUnit.SECONDS);
+    if (executorService.awaitTermination(4, TimeUnit.SECONDS)) {
+      executorService.shutdownNow();
+    }
   }
 }

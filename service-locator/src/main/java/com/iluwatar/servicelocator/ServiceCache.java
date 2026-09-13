@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +24,18 @@
  */
 package com.iluwatar.servicelocator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The service cache implementation which will cache services that are being created. On first hit,
  * the cache will be empty and thus any service that is being requested, will be created fresh and
  * then placed into the cache map. On next hit, if same service name will be requested, it will be
  * returned from the cache
- *
- * @author saifasif
  */
+@Slf4j
 public class ServiceCache {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(ServiceCache.class);
 
   private final Map<String, Service> serviceCache;
 
@@ -53,19 +50,18 @@ public class ServiceCache {
    * @return {@link Service}
    */
   public Service getService(String serviceName) {
-    Service cachedService = null;
-    for (String serviceJndiName : serviceCache.keySet()) {
-      if (serviceJndiName.equals(serviceName)) {
-        cachedService = serviceCache.get(serviceJndiName);
-        LOGGER.info("(cache call) Fetched service {}({}) from cache... !",
-                cachedService.getName(), cachedService.getId());
-      }
+    if (serviceCache.containsKey(serviceName)) {
+      var cachedService = serviceCache.get(serviceName);
+      var name = cachedService.getName();
+      var id = cachedService.getId();
+      LOGGER.info("(cache call) Fetched service {}({}) from cache... !", name, id);
+      return cachedService;
     }
-    return cachedService;
+    return null;
   }
 
   /**
-   * Adds the service into the cache map
+   * Adds the service into the cache map.
    *
    * @param newService a {@link Service}
    */

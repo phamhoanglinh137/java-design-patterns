@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,30 +24,31 @@
  */
 package com.iluwatar.servicelayer.spellbook;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.iluwatar.servicelayer.common.BaseEntity;
 import com.iluwatar.servicelayer.spell.Spell;
 import com.iluwatar.servicelayer.wizard.Wizard;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * 
- * Spellbook entity.
- *
- */
+/** Spellbook entity. */
 @Entity
 @Table(name = "SPELLBOOK")
+@Getter
+@Setter
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Spellbook extends BaseEntity {
 
   @Id
@@ -69,38 +72,6 @@ public class Spellbook extends BaseEntity {
   public Spellbook(String name) {
     this();
     this.name = name;
-  }
-  
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-  
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public Set<Wizard> getWizards() {
-    return wizards;
-  }
-
-  public void setWizards(Set<Wizard> wizards) {
-    this.wizards = wizards;
-  }
-
-  public Set<Spell> getSpells() {
-    return spells;
-  }
-
-  public void setSpells(Set<Spell> spells) {
-    this.spells = spells;
   }
 
   public void addSpell(Spell spell) {

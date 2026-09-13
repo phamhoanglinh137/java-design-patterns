@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,37 +25,33 @@
 package com.iluwatar.servicelayer.spell;
 
 import com.iluwatar.servicelayer.common.DaoBaseImpl;
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 
-/**
- * 
- * SpellDao implementation.
- *
- */
+/** SpellDao implementation. */
 public class SpellDaoImpl extends DaoBaseImpl<Spell> implements SpellDao {
 
   @Override
   public Spell findByName(String name) {
-    Session session = getSessionFactory().openSession();
     Transaction tx = null;
-    Spell result = null;
-    try {
+    Spell result;
+    try (var session = getSessionFactory().openSession()) {
       tx = session.beginTransaction();
-      Criteria criteria = session.createCriteria(persistentClass);
-      criteria.add(Restrictions.eq("name", name));
-      result = (Spell) criteria.uniqueResult();
+      CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+      CriteriaQuery<Spell> builderQuery = criteriaBuilder.createQuery(Spell.class);
+      Root<Spell> root = builderQuery.from(Spell.class);
+      builderQuery.select(root).where(criteriaBuilder.equal(root.get("name"), name));
+      Query<Spell> query = session.createQuery(builderQuery);
+      result = query.uniqueResult();
       tx.commit();
     } catch (Exception e) {
       if (tx != null) {
         tx.rollback();
       }
       throw e;
-    } finally {
-      session.close();
     }
     return result;
   }

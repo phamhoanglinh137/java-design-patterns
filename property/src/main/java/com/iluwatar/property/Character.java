@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,16 +27,14 @@ package com.iluwatar.property;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Represents Character in game and his abilities (base stats).
- */
+/** Represents Character in game and his abilities (base stats). */
 public class Character implements Prototype {
 
-  /**
-   * Enumeration of Character types
-   */
+  /** Enumeration of Character types. */
   public enum Type {
-    WARRIOR, MAGE, ROGUE
+    WARRIOR,
+    MAGE,
+    ROGUE
   }
 
   private final Prototype prototype;
@@ -43,11 +43,10 @@ public class Character implements Prototype {
   private String name;
   private Type type;
 
-  /**
-   * Constructor
-   */
+  /** Constructor. */
   public Character() {
-    this.prototype = new Prototype() { // Null-value object
+    this.prototype =
+        new Prototype() { // Null-value object
           @Override
           public Integer get(Stats stat) {
             return null;
@@ -59,10 +58,14 @@ public class Character implements Prototype {
           }
 
           @Override
-          public void set(Stats stat, Integer val) {}
+          public void set(Stats stat, Integer val) {
+            // Does Nothing
+          }
 
           @Override
-          public void remove(Stats stat) {}
+          public void remove(Stats stat) {
+            // Does Nothing.
+          }
         };
   }
 
@@ -71,9 +74,7 @@ public class Character implements Prototype {
     this.prototype = prototype;
   }
 
-  /**
-   * Constructor
-   */
+  /** Constructor. */
   public Character(String name, Character prototype) {
     this.name = name;
     this.type = prototype.type;
@@ -90,7 +91,7 @@ public class Character implements Prototype {
 
   @Override
   public Integer get(Stats stat) {
-    boolean containsValue = properties.containsKey(stat);
+    var containsValue = properties.containsKey(stat);
     if (containsValue) {
       return properties.get(stat);
     } else {
@@ -115,7 +116,7 @@ public class Character implements Prototype {
 
   @Override
   public String toString() {
-    StringBuilder builder = new StringBuilder();
+    var builder = new StringBuilder();
     if (name != null) {
       builder.append("Player: ").append(name).append('\n');
     }
@@ -125,8 +126,8 @@ public class Character implements Prototype {
     }
 
     builder.append("Stats:\n");
-    for (Stats stat : Stats.values()) {
-      Integer value = this.get(stat);
+    for (var stat : Stats.values()) {
+      var value = this.get(stat);
       if (value == null) {
         continue;
       }
@@ -134,5 +135,4 @@ public class Character implements Prototype {
     }
     return builder.toString();
   }
-
 }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,22 +26,22 @@ package com.iluwatar.mute;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * A utility class that allows you to utilize mute idiom.
- */
+/** A utility class that allows you to utilize mute idiom. */
+@Slf4j
 public final class Mute {
-  
+
   // The constructor is never meant to be called.
   private Mute() {}
 
   /**
-   * Executes the <code>runnable</code> and throws the exception occurred within a {@link AssertionError}.
-   * This method should be utilized to mute the operations that are guaranteed not to throw an exception.
-   * For instance {@link ByteArrayOutputStream#write(byte[])} declares in it's signature that it can throw
-   * an {@link IOException}, but in reality it cannot. This is because the bulk write method is not overridden
-   * in {@link ByteArrayOutputStream}.
-   * 
+   * Executes the <code>runnable</code> and throws the exception occurred within a {@link
+   * AssertionError}. This method should be utilized to mute the operations that are guaranteed not
+   * to throw an exception. For instance {@link ByteArrayOutputStream#write(byte[])} declares in its
+   * signature that it can throw an {@link IOException}, but in reality it cannot. This is because
+   * the bulk write method is not overridden in {@link ByteArrayOutputStream}.
+   *
    * @param runnable a runnable that should never throw an exception on execution.
    */
   public static void mute(CheckedRunnable runnable) {
@@ -51,11 +53,11 @@ public final class Mute {
   }
 
   /**
-   * Executes the <code>runnable</code> and logs the exception occurred on {@link System#err}.
-   * This method should be utilized to mute the operations about which most you can do is log.
-   * For instance while closing a connection to database, or cleaning up a resource, 
-   * all you can do is log the exception occurred.
-   * 
+   * Executes the <code>runnable</code> and logs the exception occurred on {@link System#err}. This
+   * method should be utilized to mute the operations about which most you can do is log. For
+   * instance while closing a connection to database, or cleaning up a resource, all you can do is
+   * log the exception occurred.
+   *
    * @param runnable a runnable that may throw an exception on execution.
    */
   public static void loggedMute(CheckedRunnable runnable) {

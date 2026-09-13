@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,101 +24,92 @@
  */
 package com.iluwatar.model.view.controller;
 
-import org.junit.Test;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
-/**
- * Date: 12/20/15 - 2:19 PM
- *
- * @author Jeroen Meulemeester
- */
-public class GiantControllerTest {
+import org.junit.jupiter.api.Test;
 
-  /**
-   * Verify if the controller passes the health level through to the model and vice versa
-   */
+/** GiantControllerTest */
+class GiantControllerTest {
+
+  /** Verify if the controller passes the health level through to the model and vice versa */
   @Test
-  public void testSetHealth() {
-    final GiantModel model = mock(GiantModel.class);
-    final GiantView view = mock(GiantView.class);
-    final GiantController controller = new GiantController(model, view);
+  void testSetHealth() {
+    final var model = mock(GiantModel.class);
+    final var view = mock(GiantView.class);
+    final var controller = new GiantController(model, view);
 
-    verifyZeroInteractions(model, view);
+    verifyNoMoreInteractions(model, view);
 
-    for (final Health health : Health.values()) {
+    for (final var health : Health.values()) {
       controller.setHealth(health);
       verify(model).setHealth(health);
-      verifyZeroInteractions(view);
+      verifyNoMoreInteractions(view);
     }
 
     controller.getHealth();
+    //noinspection ResultOfMethodCallIgnored
     verify(model).getHealth();
 
     verifyNoMoreInteractions(model, view);
   }
 
-  /**
-   * Verify if the controller passes the fatigue level through to the model and vice versa
-   */
+  /** Verify if the controller passes the fatigue level through to the model and vice versa */
   @Test
-  public void testSetFatigue() {
-    final GiantModel model = mock(GiantModel.class);
-    final GiantView view = mock(GiantView.class);
-    final GiantController controller = new GiantController(model, view);
+  void testSetFatigue() {
+    final var model = mock(GiantModel.class);
+    final var view = mock(GiantView.class);
+    final var controller = new GiantController(model, view);
 
-    verifyZeroInteractions(model, view);
+    verifyNoMoreInteractions(model, view);
 
-    for (final Fatigue fatigue : Fatigue.values()) {
+    for (final var fatigue : Fatigue.values()) {
       controller.setFatigue(fatigue);
       verify(model).setFatigue(fatigue);
-      verifyZeroInteractions(view);
+      verifyNoMoreInteractions(view);
     }
 
     controller.getFatigue();
+    //noinspection ResultOfMethodCallIgnored
     verify(model).getFatigue();
 
     verifyNoMoreInteractions(model, view);
   }
 
-  /**
-   * Verify if the controller passes the nourishment level through to the model and vice versa
-   */
+  /** Verify if the controller passes the nourishment level through to the model and vice versa */
   @Test
-  public void testSetNourishment() {
-    final GiantModel model = mock(GiantModel.class);
-    final GiantView view = mock(GiantView.class);
-    final GiantController controller = new GiantController(model, view);
+  void testSetNourishment() {
+    final var model = mock(GiantModel.class);
+    final var view = mock(GiantView.class);
+    final var controller = new GiantController(model, view);
 
-    verifyZeroInteractions(model, view);
+    verifyNoMoreInteractions(model, view);
 
-    for (final Nourishment nourishment : Nourishment.values()) {
+    for (final var nourishment : Nourishment.values()) {
       controller.setNourishment(nourishment);
       verify(model).setNourishment(nourishment);
-      verifyZeroInteractions(view);
+      verifyNoMoreInteractions(view);
     }
 
     controller.getNourishment();
+    //noinspection ResultOfMethodCallIgnored
     verify(model).getNourishment();
 
     verifyNoMoreInteractions(model, view);
   }
 
   @Test
-  public void testUpdateView() {
-    final GiantModel model = mock(GiantModel.class);
-    final GiantView view = mock(GiantView.class);
-    final GiantController controller = new GiantController(model, view);
+  void testUpdateView() {
+    final var model = mock(GiantModel.class);
+    final var view = mock(GiantView.class);
+    final var controller = new GiantController(model, view);
 
-    verifyZeroInteractions(model, view);
+    verifyNoMoreInteractions(model, view);
 
     controller.updateView();
     verify(view).displayGiant(model);
 
     verifyNoMoreInteractions(model, view);
   }
-
 }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +27,7 @@ package com.iluwatar.stepbuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The Step Builder class.
- */
+/** The Step Builder class. */
 public final class CharacterStepBuilder {
 
   private CharacterStepBuilder() {}
@@ -36,9 +36,7 @@ public final class CharacterStepBuilder {
     return new CharacterSteps();
   }
 
-  /**
-   * First Builder Step in charge of the Character name. Next Step available : ClassStep
-   */
+  /** First Builder Step in charge of the Character name. Next Step available : ClassStep */
   public interface NameStep {
     ClassStep name(String name);
   }
@@ -73,9 +71,7 @@ public final class CharacterStepBuilder {
     BuildStep noSpell();
   }
 
-  /**
-   * This step is in charge of abilities. Next Step available : BuildStep
-   */
+  /** This step is in charge of abilities. Next Step available : BuildStep */
   public interface AbilityStep {
     AbilityStep withAbility(String ability);
 
@@ -91,19 +87,16 @@ public final class CharacterStepBuilder {
     Character build();
   }
 
-
-  /**
-   * Step Builder implementation.
-   */
-  private static class CharacterSteps implements NameStep, ClassStep, WeaponStep, SpellStep,
-      AbilityStep, BuildStep {
+  /** Step Builder implementation. */
+  private static class CharacterSteps
+      implements NameStep, ClassStep, WeaponStep, SpellStep, AbilityStep, BuildStep {
 
     private String name;
     private String fighterClass;
     private String wizardClass;
     private String weapon;
     private String spell;
-    private List<String> abilities = new ArrayList<>();
+    private final List<String> abilities = new ArrayList<>();
 
     @Override
     public ClassStep name(String name) {
@@ -163,7 +156,7 @@ public final class CharacterStepBuilder {
 
     @Override
     public Character build() {
-      Character character = new Character(name);
+      var character = new Character(name);
 
       if (fighterClass != null) {
         character.setFighterClass(fighterClass);

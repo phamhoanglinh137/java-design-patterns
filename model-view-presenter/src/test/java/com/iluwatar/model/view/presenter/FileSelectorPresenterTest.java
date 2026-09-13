@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,63 +24,51 @@
  */
 package com.iluwatar.model.view.presenter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * This test case is responsible for testing our application by taking advantage of the
  * Model-View-Controller architectural pattern.
  */
-public class FileSelectorPresenterTest {
+class FileSelectorPresenterTest {
 
-  /**
-   * The Presenter component.
-   */
+  /** The Presenter component. */
   private FileSelectorPresenter presenter;
 
-  /**
-   * The View component, implemented this time as a Stub!!!
-   */
+  /** The View component, implemented this time as a Stub!!! */
   private FileSelectorStub stub;
 
-  /**
-   * The Model component.
-   */
+  /** The Model component. */
   private FileLoader loader;
 
-  /**
-   * Initializes the components of the test case.
-   */
-  @Before
-  public void setUp() {
+  /** Initializes the components of the test case. */
+  @BeforeEach
+  void setUp() {
     this.stub = new FileSelectorStub();
     this.loader = new FileLoader();
     presenter = new FileSelectorPresenter(this.stub);
     presenter.setLoader(loader);
   }
 
-  /**
-   * Tests if the Presenter was successfully connected with the View.
-   */
+  /** Tests if the Presenter was successfully connected with the View. */
   @Test
-  public void wiring() {
+  void wiring() {
     presenter.start();
 
     assertNotNull(stub.getPresenter());
     assertTrue(stub.isOpened());
   }
 
-  /**
-   * Tests if the name of the file changes.
-   */
+  /** Tests if the name of the file changes. */
   @Test
-  public void updateFileNameToLoader() {
-    String expectedFile = "Stamatis";
+  void updateFileNameToLoader() {
+    var expectedFile = "Stamatis";
     stub.setFileName(expectedFile);
 
     presenter.start();
@@ -92,7 +82,7 @@ public class FileSelectorPresenterTest {
    * empty string.
    */
   @Test
-  public void fileConfirmationWhenNameIsNull() {
+  void fileConfirmationWhenNameIsNull() {
     stub.setFileName(null);
 
     presenter.start();
@@ -103,11 +93,9 @@ public class FileSelectorPresenterTest {
     assertEquals(1, stub.getMessagesSent());
   }
 
-  /**
-   * Tests if we receive a confirmation when we attempt to open a file that it doesn't exist.
-   */
+  /** Tests if we receive a confirmation when we attempt to open a file that it doesn't exist. */
   @Test
-  public void fileConfirmationWhenFileDoesNotExist() {
+  void fileConfirmationWhenFileDoesNotExist() {
     stub.setFileName("RandomName.txt");
 
     presenter.start();
@@ -118,11 +106,9 @@ public class FileSelectorPresenterTest {
     assertEquals(1, stub.getMessagesSent());
   }
 
-  /**
-   * Tests if we can open the file, when it exists.
-   */
+  /** Tests if we can open the file, when it exists. */
   @Test
-  public void fileConfirmationWhenFileExists() {
+  void fileConfirmationWhenFileExists() {
     stub.setFileName("etc/data/test.txt");
     presenter.start();
     presenter.fileNameChanged();
@@ -132,14 +118,23 @@ public class FileSelectorPresenterTest {
     assertTrue(stub.dataDisplayed());
   }
 
-  /**
-   * Tests if the view closes after cancellation.
-   */
+  /** Tests if the view closes after cancellation. */
   @Test
-  public void cancellation() {
+  void cancellation() {
     presenter.start();
     presenter.cancelled();
 
     assertFalse(stub.isOpened());
+  }
+
+  @Test
+  void testNullFile() {
+    stub.setFileName(null);
+    presenter.start();
+    presenter.fileNameChanged();
+    presenter.confirmed();
+
+    assertFalse(loader.isLoaded());
+    assertFalse(stub.dataDisplayed());
   }
 }

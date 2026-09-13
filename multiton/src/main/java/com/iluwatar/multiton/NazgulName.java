@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +24,15 @@
  */
 package com.iluwatar.multiton;
 
-/**
- * 
- * Each Nazgul has different {@link NazgulName}.
- *
- */
+/** Each Nazgul has different {@link NazgulName}. */
 public enum NazgulName {
-
-  KHAMUL, MURAZOR, DWAR, JI_INDUR, AKHORAHIL, HOARMURATH, ADUNAPHEL, REN, UVATHA;
-
+  KHAMUL,
+  MURAZOR,
+  DWAR,
+  JI_INDUR,
+  AKHORAHIL,
+  HOARMURATH,
+  ADUNAPHEL,
+  REN,
+  UVATHA
 }

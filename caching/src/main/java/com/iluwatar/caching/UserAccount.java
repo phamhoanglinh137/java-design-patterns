@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,49 +24,23 @@
  */
 package com.iluwatar.caching;
 
-/**
- * Entity class (stored in cache and DB) used in the application.
- */
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+/** Entity class (stored in cache and DB) used in the application. */
+@Data
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class UserAccount {
+  /** User Id. */
   private String userId;
+
+  /** User Name. */
   private String userName;
+
+  /** Additional Info. */
   private String additionalInfo;
-
-  /**
-   * Constructor
-   */
-  public UserAccount(String userId, String userName, String additionalInfo) {
-    this.userId = userId;
-    this.userName = userName;
-    this.additionalInfo = additionalInfo;
-  }
-
-  public String getUserId() {
-    return userId;
-  }
-
-  public void setUserId(String userId) {
-    this.userId = userId;
-  }
-
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  public String getAdditionalInfo() {
-    return additionalInfo;
-  }
-
-  public void setAdditionalInfo(String additionalInfo) {
-    this.additionalInfo = additionalInfo;
-  }
-
-  @Override
-  public String toString() {
-    return userId + ", " + userName + ", " + additionalInfo;
-  }
 }

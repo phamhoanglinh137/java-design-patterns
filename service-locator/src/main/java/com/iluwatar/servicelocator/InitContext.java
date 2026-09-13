@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +24,17 @@
  */
 package com.iluwatar.servicelocator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * For JNDI lookup of services from the web.xml. Will match name of the service name that is being
  * requested and return a newly created service object with the name
- *
- * @author saifasif
  */
+@Slf4j
 public class InitContext {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(InitContext.class);
-
   /**
-   * Perform the lookup based on the service name. The returned object will need to be casted into a
+   * Perform the lookup based on the service name. The returned object will need to be cast into a
    * {@link Service}
    *
    * @param serviceName a string

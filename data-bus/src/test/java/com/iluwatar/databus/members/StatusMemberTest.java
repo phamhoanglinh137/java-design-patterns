@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,58 +24,54 @@
  */
 package com.iluwatar.databus.members;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.iluwatar.databus.DataBus;
 import com.iluwatar.databus.data.MessageData;
 import com.iluwatar.databus.data.StartingData;
 import com.iluwatar.databus.data.StoppingData;
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.time.LocalDateTime;
 import java.time.Month;
+import org.junit.jupiter.api.Test;
 
-/**
- * Tests for {@link StatusMember}.
- *
- * @author Paul Campbell (pcampbell@kemitix.net)
- */
-public class StatusMemberTest {
+/** Tests for {@link StatusMember}. */
+class StatusMemberTest {
 
   @Test
-  public void statusRecordsTheStartTime() {
-    //given
-    final LocalDateTime startTime = LocalDateTime.of(2017, Month.APRIL, 1, 19, 9);
-    final StartingData startingData = new StartingData(startTime);
-    final StatusMember statusMember = new StatusMember(1);
-    //when
+  void statusRecordsTheStartTime() {
+    // given
+    final var startTime = LocalDateTime.of(2017, Month.APRIL, 1, 19, 9);
+    final var startingData = new StartingData(startTime);
+    final var statusMember = new StatusMember(1);
+    // when
     statusMember.accept(startingData);
-    //then
-    Assert.assertEquals(startTime, statusMember.getStarted());
+    // then
+    assertEquals(startTime, statusMember.getStarted());
   }
 
   @Test
-  public void statusRecordsTheStopTime() {
-    //given
-    final LocalDateTime stop = LocalDateTime.of(2017, Month.APRIL, 1, 19, 12);
-    final StoppingData stoppingData = new StoppingData(stop);
+  void statusRecordsTheStopTime() {
+    // given
+    final var stop = LocalDateTime.of(2017, Month.APRIL, 1, 19, 12);
+    final var stoppingData = new StoppingData(stop);
     stoppingData.setDataBus(DataBus.getInstance());
-    final StatusMember statusMember = new StatusMember(1);
-    //when
+    final var statusMember = new StatusMember(1);
+    // when
     statusMember.accept(stoppingData);
-    //then
-    Assert.assertEquals(stop, statusMember.getStopped());
+    // then
+    assertEquals(stop, statusMember.getStopped());
   }
 
   @Test
-  public void statusIgnoresMessageData() {
-    //given
-    final MessageData messageData = new MessageData("message");
-    final StatusMember statusMember = new StatusMember(1);
-    //when
+  void statusIgnoresMessageData() {
+    // given
+    final var messageData = new MessageData("message");
+    final var statusMember = new StatusMember(1);
+    // when
     statusMember.accept(messageData);
-    //then
-    Assert.assertNull(statusMember.getStarted());
-    Assert.assertNull(statusMember.getStopped());
+    // then
+    assertNull(statusMember.getStarted());
+    assertNull(statusMember.getStopped());
   }
-
 }

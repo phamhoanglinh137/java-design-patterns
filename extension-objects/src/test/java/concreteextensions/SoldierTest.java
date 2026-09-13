@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +24,36 @@
  */
 package concreteextensions;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import units.SoldierUnit;
 
-/**
- * Created by Srdjan on 03-May-17.
- */
-public class SoldierTest {
+/** Created by Srdjan on 03-May-17. */
+class SoldierTest {
+
   @Test
-  public void soldierReady() throws Exception {
-    final Soldier soldier = new Soldier(new SoldierUnit("SoldierUnitTest"));
+  void soldierReady() {
 
+    Logger soldierLogger = (Logger) LoggerFactory.getLogger(Soldier.class);
+
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
+    listAppender.start();
+
+    soldierLogger.addAppender(listAppender);
+
+    final var soldier = new Soldier(new SoldierUnit("SoldierUnitTest"));
     soldier.soldierReady();
-  }
 
+    List<ILoggingEvent> logsList = listAppender.list;
+    assertEquals(
+        "[Soldier] " + soldier.unit().getName() + " is ready!", logsList.get(0).getMessage());
+    assertEquals(Level.INFO, logsList.get(0).getLevel());
+  }
 }

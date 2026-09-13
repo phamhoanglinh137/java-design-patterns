@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +24,12 @@
  */
 package com.iluwatar.intercepting.filter;
 
-
-/**
- * Filter Chain carries multiple filters and help to execute them in defined order on target.
- * 
- * @author joshzambales
- */
+/** Filter Chain carries multiple filters and help to execute them in defined order on target. */
 public class FilterChain {
 
   private Filter chain;
 
-
-  /**
-   * Adds filter
-   */
+  /** Adds filter. */
   public void addFilter(Filter filter) {
     if (chain == null) {
       chain = filter;
@@ -44,9 +38,7 @@ public class FilterChain {
     }
   }
 
-  /**
-   * Execute filter chain
-   */
+  /** Execute filter chain. */
   public String execute(Order order) {
     if (chain != null) {
       return chain.execute(order);

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,55 +24,70 @@
  */
 package com.iluwatar.strategy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
  * The Strategy pattern (also known as the policy pattern) is a software design pattern that enables
  * an algorithm's behavior to be selected at runtime.
- * <p>
- * Before Java 8 the Strategies needed to be separate classes forcing the developer
- * to write lots of boilerplate code. With modern Java it is easy to pass behavior
- * with method references and lambdas making the code shorter and more readable.
- * <p>
- * In this example ({@link DragonSlayingStrategy}) encapsulates an algorithm. The containing object
- * ({@link DragonSlayer}) can alter its behavior by changing its strategy.
- * 
+ *
+ * <p>Before Java 8 the Strategies needed to be separate classes forcing the developer to write lots
+ * of boilerplate code. With modern Java, it is easy to pass behavior with method references and
+ * lambdas making the code shorter and more readable.
+ *
+ * <p>In this example ({@link DragonSlayingStrategy}) encapsulates an algorithm. The containing
+ * object ({@link DragonSlayer}) can alter its behavior by changing its strategy.
  */
+@Slf4j
 public class App {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-  
+  private static final String RED_DRAGON_EMERGES = "Red dragon emerges.";
+  private static final String GREEN_DRAGON_SPOTTED = "Green dragon spotted ahead!";
+  private static final String BLACK_DRAGON_LANDS = "Black dragon lands before you.";
+
   /**
-   * Program entry point
-   * 
+   * Program entry point.
+   *
    * @param args command line args
    */
   public static void main(String[] args) {
     // GoF Strategy pattern
-    LOGGER.info("Green dragon spotted ahead!");
-    DragonSlayer dragonSlayer = new DragonSlayer(new MeleeStrategy());
+    LOGGER.info(GREEN_DRAGON_SPOTTED);
+    var dragonSlayer = new DragonSlayer(new MeleeStrategy());
     dragonSlayer.goToBattle();
-    LOGGER.info("Red dragon emerges.");
+    LOGGER.info(RED_DRAGON_EMERGES);
     dragonSlayer.changeStrategy(new ProjectileStrategy());
     dragonSlayer.goToBattle();
-    LOGGER.info("Black dragon lands before you.");
+    LOGGER.info(BLACK_DRAGON_LANDS);
     dragonSlayer.changeStrategy(new SpellStrategy());
     dragonSlayer.goToBattle();
 
-    // Java 8 Strategy pattern
-    LOGGER.info("Green dragon spotted ahead!");
-    dragonSlayer = new DragonSlayer(
-        () -> LOGGER.info("With your Excalibur you severe the dragon's head!"));
+    // Java 8 functional implementation Strategy pattern
+    LOGGER.info(GREEN_DRAGON_SPOTTED);
+    dragonSlayer =
+        new DragonSlayer(() -> LOGGER.info("With your Excalibur you sever the dragon's head!"));
     dragonSlayer.goToBattle();
-    LOGGER.info("Red dragon emerges.");
-    dragonSlayer.changeStrategy(() -> LOGGER.info(
-        "You shoot the dragon with the magical crossbow and it falls dead on the ground!"));
+    LOGGER.info(RED_DRAGON_EMERGES);
+    dragonSlayer.changeStrategy(
+        () ->
+            LOGGER.info(
+                "You shoot the dragon with the magical crossbow and it falls dead on the ground!"));
     dragonSlayer.goToBattle();
-    LOGGER.info("Black dragon lands before you.");
-    dragonSlayer.changeStrategy(() -> LOGGER.info(
-        "You cast the spell of disintegration and the dragon vaporizes in a pile of dust!"));
+    LOGGER.info(BLACK_DRAGON_LANDS);
+    dragonSlayer.changeStrategy(
+        () ->
+            LOGGER.info(
+                "You cast the spell of disintegration and the dragon vaporizes in a pile of dust!"));
+    dragonSlayer.goToBattle();
+
+    // Java 8 lambda implementation with enum Strategy pattern
+    LOGGER.info(GREEN_DRAGON_SPOTTED);
+    dragonSlayer.changeStrategy(LambdaStrategy.Strategy.MELEE_STRATEGY);
+    dragonSlayer.goToBattle();
+    LOGGER.info(RED_DRAGON_EMERGES);
+    dragonSlayer.changeStrategy(LambdaStrategy.Strategy.PROJECTILE_STRATEGY);
+    dragonSlayer.goToBattle();
+    LOGGER.info(BLACK_DRAGON_LANDS);
+    dragonSlayer.changeStrategy(LambdaStrategy.Strategy.SPELL_STRATEGY);
     dragonSlayer.goToBattle();
   }
 }

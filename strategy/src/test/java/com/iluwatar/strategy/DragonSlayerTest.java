@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,44 +24,36 @@
  */
 package com.iluwatar.strategy;
 
-import org.junit.Test;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-/**
- * Date: 12/29/15 - 10:50 PM
- *
- * @author Jeroen Meulemeester
- */
-public class DragonSlayerTest {
+import org.junit.jupiter.api.Test;
 
-  /**
-   * Verify if the dragon slayer uses the strategy during battle
-   */
+/** DragonSlayerTest */
+class DragonSlayerTest {
+
+  /** Verify if the dragon slayer uses the strategy during battle. */
   @Test
-  public void testGoToBattle() {
-    final DragonSlayingStrategy strategy = mock(DragonSlayingStrategy.class);
-    final DragonSlayer dragonSlayer = new DragonSlayer(strategy);
+  void testGoToBattle() {
+    final var strategy = mock(DragonSlayingStrategy.class);
+    final var dragonSlayer = new DragonSlayer(strategy);
 
     dragonSlayer.goToBattle();
     verify(strategy).execute();
     verifyNoMoreInteractions(strategy);
   }
 
-  /**
-   * Verify if the dragon slayer uses the new strategy during battle after a change of strategy
-   */
+  /** Verify if the dragon slayer uses the new strategy during battle after a change of strategy. */
   @Test
-  public void testChangeStrategy() throws Exception {
-    final DragonSlayingStrategy initialStrategy = mock(DragonSlayingStrategy.class);
-    final DragonSlayer dragonSlayer = new DragonSlayer(initialStrategy);
+  void testChangeStrategy() {
+    final var initialStrategy = mock(DragonSlayingStrategy.class);
+    final var dragonSlayer = new DragonSlayer(initialStrategy);
 
     dragonSlayer.goToBattle();
     verify(initialStrategy).execute();
 
-    final DragonSlayingStrategy newStrategy = mock(DragonSlayingStrategy.class);
+    final var newStrategy = mock(DragonSlayingStrategy.class);
     dragonSlayer.changeStrategy(newStrategy);
 
     dragonSlayer.goToBattle();

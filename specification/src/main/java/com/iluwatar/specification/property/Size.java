@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +24,13 @@
  */
 package com.iluwatar.specification.property;
 
-/**
- *
- * Size property.
- *
- */
+/** Size property. */
 public enum Size {
+  SMALL("small"),
+  NORMAL("normal"),
+  LARGE("large");
 
-  SMALL("small"), NORMAL("normal"), LARGE("large");
-
-  private String title;
+  private final String title;
 
   Size(String title) {
     this.title = title;

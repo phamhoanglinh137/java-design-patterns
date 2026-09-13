@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,20 +24,15 @@
  */
 package com.iluwatar.flux.store;
 
+import com.iluwatar.flux.action.Action;
+import com.iluwatar.flux.view.View;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.iluwatar.flux.action.Action;
-import com.iluwatar.flux.view.View;
-
-/**
- * 
- * Store is a data model.
- *
- */
+/** Store is a data model. */
 public abstract class Store {
 
-  private List<View> views = new LinkedList<>();
+  private final List<View> views = new LinkedList<>();
 
   public abstract void onAction(Action action);
 
@@ -44,6 +41,6 @@ public abstract class Store {
   }
 
   protected void notifyChange() {
-    views.stream().forEach(view -> view.storeChanged(this));
+    views.forEach(view -> view.storeChanged(this));
   }
 }

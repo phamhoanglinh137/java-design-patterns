@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,34 +24,43 @@
  */
 package com.iluwatar.event.aggregator;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-/**
- * 
- * EventEmitter is the base class for event producers that can be observed.
- *
- */
+/** EventEmitter is the base class for event producers that can be observed. */
 public abstract class EventEmitter {
 
-  private List<EventObserver> observers;
+  private final Map<Event, List<EventObserver>> observerLists;
 
   public EventEmitter() {
-    observers = new LinkedList<>();
+    observerLists = new HashMap<>();
   }
 
-  public EventEmitter(EventObserver obs) {
+  public EventEmitter(EventObserver obs, Event e) {
     this();
-    registerObserver(obs);
+    registerObserver(obs, e);
   }
 
-  public final void registerObserver(EventObserver obs) {
-    observers.add(obs);
+  /**
+   * Registers observer for specific event in the related list.
+   *
+   * @param obs the observer that observers this emitter
+   * @param e the specific event for that observation occurs
+   */
+  public final void registerObserver(EventObserver obs, Event e) {
+    if (!observerLists.containsKey(e)) {
+      observerLists.put(e, new LinkedList<>());
+    }
+    if (!observerLists.get(e).contains(obs)) {
+      observerLists.get(e).add(obs);
+    }
   }
 
   protected void notifyObservers(Event e) {
-    for (EventObserver obs : observers) {
-      obs.onEvent(e);
+    if (observerLists.containsKey(e)) {
+      observerLists.get(e).forEach(observer -> observer.onEvent(e));
     }
   }
 

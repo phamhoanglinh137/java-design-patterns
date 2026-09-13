@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,30 +24,27 @@
  */
 package com.iluwatar.property;
 
-import org.junit.Test;
-
 import static com.iluwatar.property.Character.Type;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Date: 12/28/15 - 7:46 PM
- *
- * @author Jeroen Meulemeester
- */
-public class CharacterTest {
+import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+
+/** CharacterTest */
+class CharacterTest {
 
   @Test
-  public void testPrototypeStats() throws Exception {
-    final Character prototype = new Character();
+  void testPrototypeStats() {
+    final var prototype = new Character();
 
-    for (final Stats stat : Stats.values()) {
+    for (final var stat : Stats.values()) {
       assertFalse(prototype.has(stat));
       assertNull(prototype.get(stat));
 
-      final Integer expectedValue = stat.ordinal();
+      final var expectedValue = stat.ordinal();
       prototype.set(stat, expectedValue);
       assertTrue(prototype.has(stat));
       assertEquals(expectedValue, prototype.get(stat));
@@ -54,72 +53,88 @@ public class CharacterTest {
       assertFalse(prototype.has(stat));
       assertNull(prototype.get(stat));
     }
-
   }
 
   @Test
-  public void testCharacterStats() throws Exception {
-    final Character prototype = new Character();
-    for (final Stats stat : Stats.values()) {
-      prototype.set(stat, stat.ordinal());
-    }
+  void testCharacterStats() {
+    final var prototype = new Character();
+    Arrays.stream(Stats.values()).forEach(stat -> prototype.set(stat, stat.ordinal()));
 
-    final Character mage = new Character(Type.MAGE, prototype);
-    for (final Stats stat : Stats.values()) {
-      final Integer expectedValue = stat.ordinal();
+    final var mage = new Character(Type.MAGE, prototype);
+    for (final var stat : Stats.values()) {
+      final var expectedValue = stat.ordinal();
       assertTrue(mage.has(stat));
       assertEquals(expectedValue, mage.get(stat));
     }
   }
 
   @Test
-  public void testToString() throws Exception {
-    final Character prototype = new Character();
+  void testToString() {
+    final var prototype = new Character();
     prototype.set(Stats.ARMOR, 1);
     prototype.set(Stats.AGILITY, 2);
     prototype.set(Stats.INTELLECT, 3);
-    assertEquals("Stats:\n - AGILITY:2\n - ARMOR:1\n - INTELLECT:3\n", prototype.toString());
+    var message =
+        """
+            Stats:
+             - AGILITY:2
+             - ARMOR:1
+             - INTELLECT:3
+            """;
+    assertEquals(message, prototype.toString());
 
-    final Character stupid = new Character(Type.ROGUE, prototype);
+    final var stupid = new Character(Type.ROGUE, prototype);
     stupid.remove(Stats.INTELLECT);
-    assertEquals("Character type: ROGUE\nStats:\n - AGILITY:2\n - ARMOR:1\n", stupid.toString());
+    String expectedStupidString =
+        """
+            Character type: ROGUE
+            Stats:
+             - AGILITY:2
+             - ARMOR:1
+            """;
+    assertEquals(expectedStupidString, stupid.toString());
 
-    final Character weak = new Character("weak", prototype);
+    final var weak = new Character("weak", prototype);
     weak.remove(Stats.ARMOR);
-    assertEquals("Player: weak\nStats:\n - AGILITY:2\n - INTELLECT:3\n", weak.toString());
-
+    String expectedWeakString =
+        """
+            Player: weak
+            Stats:
+             - AGILITY:2
+             - INTELLECT:3
+            """;
+    assertEquals(expectedWeakString, weak.toString());
   }
 
   @Test
-  public void testName() throws Exception {
-    final Character prototype = new Character();
+  void testName() {
+    final var prototype = new Character();
     prototype.set(Stats.ARMOR, 1);
     prototype.set(Stats.INTELLECT, 2);
     assertNull(prototype.name());
 
-    final Character stupid = new Character(Type.ROGUE, prototype);
+    final var stupid = new Character(Type.ROGUE, prototype);
     stupid.remove(Stats.INTELLECT);
     assertNull(stupid.name());
 
-    final Character weak = new Character("weak", prototype);
+    final var weak = new Character("weak", prototype);
     weak.remove(Stats.ARMOR);
     assertEquals("weak", weak.name());
   }
 
   @Test
-  public void testType() throws Exception {
-    final Character prototype = new Character();
+  void testType() {
+    final var prototype = new Character();
     prototype.set(Stats.ARMOR, 1);
     prototype.set(Stats.INTELLECT, 2);
     assertNull(prototype.type());
 
-    final Character stupid = new Character(Type.ROGUE, prototype);
+    final var stupid = new Character(Type.ROGUE, prototype);
     stupid.remove(Stats.INTELLECT);
     assertEquals(Type.ROGUE, stupid.type());
 
-    final Character weak = new Character("weak", prototype);
+    final var weak = new Character("weak", prototype);
     weak.remove(Stats.ARMOR);
     assertNull(weak.type());
   }
-
 }

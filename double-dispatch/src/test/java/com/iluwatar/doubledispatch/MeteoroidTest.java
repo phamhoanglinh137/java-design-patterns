@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,29 +24,23 @@
  */
 package com.iluwatar.doubledispatch;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import org.junit.jupiter.api.Test;
 
-/**
- * Date: 12/10/15 - 11:31 PM
- *
- * @author Jeroen Meulemeester
- */
-public class MeteoroidTest extends CollisionTest<Meteoroid> {
+/** MeteoroidTest */
+class MeteoroidTest extends CollisionTest<Meteoroid> {
 
   @Override
   final Meteoroid getTestedObject() {
     return new Meteoroid(1, 2, 3, 4);
   }
 
-  /**
-   * Test the constructor parameters
-   */
+  /** Test the constructor parameters */
   @Test
-  public void testConstructor() {
-    final Meteoroid meteoroid = new Meteoroid(1, 2, 3, 4);
+  void testConstructor() {
+    final var meteoroid = new Meteoroid(1, 2, 3, 4);
     assertEquals(1, meteoroid.getLeft());
     assertEquals(2, meteoroid.getTop());
     assertEquals(3, meteoroid.getRight());
@@ -54,56 +50,27 @@ public class MeteoroidTest extends CollisionTest<Meteoroid> {
     assertEquals("Meteoroid at [1,2,3,4] damaged=false onFire=false", meteoroid.toString());
   }
 
-  /**
-   * Test what happens we collide with an asteroid
-   */
+  /** Test what happens we collide with an asteroid */
   @Test
-  public void testCollideFlamingAsteroid() {
-    testCollision(
-        new FlamingAsteroid(1, 1, 3, 4),
-        false, true,
-        false, false,
-        "Meteoroid hits FlamingAsteroid."
-    );
+  void testCollideFlamingAsteroid() {
+    testCollision(new FlamingAsteroid(1, 1, 3, 4), false, true, false, false);
   }
 
-  /**
-   * Test what happens we collide with an meteoroid
-   */
+  /** Test what happens we collide with an meteoroid */
   @Test
-  public void testCollideMeteoroid() {
-    testCollision(
-        new Meteoroid(1, 1, 3, 4),
-        false, false,
-        false, false,
-        "Meteoroid hits Meteoroid."
-    );
+  void testCollideMeteoroid() {
+    testCollision(new Meteoroid(1, 1, 3, 4), false, false, false, false);
   }
 
-  /**
-   * Test what happens we collide with ISS
-   */
+  /** Test what happens we collide with ISS */
   @Test
-  public void testCollideSpaceStationIss() {
-    testCollision(
-        new SpaceStationIss(1, 1, 3, 4),
-        true, false,
-        false, false,
-        "Meteoroid hits SpaceStationIss. SpaceStationIss is damaged!"
-    );
+  void testCollideSpaceStationIss() {
+    testCollision(new SpaceStationIss(1, 1, 3, 4), true, false, false, false);
   }
 
-  /**
-   * Test what happens we collide with MIR
-   */
+  /** Test what happens we collide with MIR */
   @Test
-  public void testCollideSpaceStationMir() {
-    testCollision(
-        new SpaceStationMir(1, 1, 3, 4),
-        true, false,
-        false, false,
-        "Meteoroid hits SpaceStationMir. SpaceStationMir is damaged!"
-    );
+  void testCollideSpaceStationMir() {
+    testCollision(new SpaceStationMir(1, 1, 3, 4), true, false, false, false);
   }
-
 }

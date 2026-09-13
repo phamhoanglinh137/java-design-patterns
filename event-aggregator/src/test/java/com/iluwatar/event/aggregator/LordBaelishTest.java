@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +24,11 @@
  */
 package com.iluwatar.event.aggregator;
 
-/**
- * Date: 12/12/15 - 10:57 AM
- *
- * @author Jeroen Meulemeester
- */
-public class LordBaelishTest extends EventEmitterTest<LordBaelish> {
+/** LordBaelishTest */
+class LordBaelishTest extends EventEmitterTest<LordBaelish> {
 
-  /**
-   * Create a new test instance, using the correct object factory
-   */
+  /** Create a new test instance, using the correct object factory */
   public LordBaelishTest() {
     super(Weekday.FRIDAY, Event.STARK_SIGHTED, LordBaelish::new, LordBaelish::new);
   }
-
 }

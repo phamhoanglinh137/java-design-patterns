@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +25,13 @@
 package com.iluwatar.nullobject;
 
 /**
- * 
  * Null Object implementation for binary tree node.
- * <p>
- * Implemented as Singleton, since all the NullNodes are the same.
  *
+ * <p>Implemented as Singleton, since all the NullNodes are the same.
  */
 public final class NullNode implements Node {
 
-  private static NullNode instance = new NullNode();
+  private static final NullNode instance = new NullNode();
 
   private NullNode() {}
 

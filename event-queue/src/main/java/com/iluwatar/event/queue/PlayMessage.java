@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,40 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.iluwatar.event.queue;
 
 import javax.sound.sampled.AudioInputStream;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * The Event Queue's queue will store the instances of this class.
- * @author mkuprivecz
- *
- */
+/** The Event Queue's queue will store the instances of this class. */
+@Getter
+@AllArgsConstructor
 public class PlayMessage {
-  
-  private AudioInputStream stream;
-  
-  private float volume;
-  
-  public PlayMessage(AudioInputStream stream, float volume) {
-    setStream(stream);
-    setVolume(volume);
-  }
 
-  public AudioInputStream getStream() {
-    return stream;
-  }
+  private final AudioInputStream stream;
 
-  private void setStream(AudioInputStream stream) {
-    this.stream = stream;
-  }
-
-  public float getVolume() {
-    return volume;
-  }
-
-  public void setVolume(float volume) {
-    this.volume = volume;
-  }
+  @Setter private float volume;
 }

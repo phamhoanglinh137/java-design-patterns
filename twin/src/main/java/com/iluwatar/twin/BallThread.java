@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,35 +22,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.iluwatar.twin;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This class is a UI thread for drawing the {@link BallItem}, and provide the method for suspend
- * and resume. It hold the reference of {@link BallItem} to delegate the draw task.
- * 
+ * and resume. It holds the reference of {@link BallItem} to delegate the draw task.
  */
-
+@Slf4j
 public class BallThread extends Thread {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(BallThread.class);
-
-  private BallItem twin;
+  @Setter private BallItem twin;
 
   private volatile boolean isSuspended;
 
   private volatile boolean isRunning = true;
 
-  public void setTwin(BallItem twin) {
-    this.twin = twin;
-  }
-
-  /**
-   * Run the thread
-   */
+  /** Run the thread. */
   public void run() {
 
     while (isRunning) {
@@ -79,4 +71,3 @@ public class BallThread extends Thread {
     this.isSuspended = true;
   }
 }
-

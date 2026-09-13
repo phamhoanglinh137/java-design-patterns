@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +24,16 @@
  */
 package com.iluwatar.templatemethod;
 
-/**
- * Date: 12/30/15 - 18:12 PM
- *
- * @author Jeroen Meulemeester
- */
-public class HitAndRunMethodTest extends StealingMethodTest<HitAndRunMethod> {
+/** HitAndRunMethodTest */
+class HitAndRunMethodTest extends StealingMethodTest<HitAndRunMethod> {
 
-  /**
-   * Create a new test for the {@link HitAndRunMethod}
-   */
+  /** Create a new test for the {@link HitAndRunMethod} */
   public HitAndRunMethodTest() {
     super(
         new HitAndRunMethod(),
         "old goblin woman",
         "The target has been chosen as old goblin woman.",
         "Approach the old goblin woman from behind.",
-        "Grab the handbag and run away fast!"
-    );
+        "Grab the handbag and run away fast!");
   }
-
 }

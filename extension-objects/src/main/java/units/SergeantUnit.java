@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +26,9 @@ package units;
 
 import abstractextensions.UnitExtension;
 import concreteextensions.Sergeant;
+import java.util.Optional;
 
-/**
- * Class defining SergeantUnit
- */
+/** Class defining SergeantUnit. */
 public class SergeantUnit extends Unit {
 
   public SergeantUnit(String name) {
@@ -38,10 +39,7 @@ public class SergeantUnit extends Unit {
   public UnitExtension getUnitExtension(String extensionName) {
 
     if (extensionName.equals("SergeantExtension")) {
-      if (unitExtension == null) {
-        unitExtension = new Sergeant(this);
-      }
-      return unitExtension;
+      return Optional.ofNullable(unitExtension).orElseGet(() -> new Sergeant(this));
     }
 
     return super.getUnitExtension(extensionName);

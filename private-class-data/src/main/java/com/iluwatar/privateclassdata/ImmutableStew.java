@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,29 +24,25 @@
  */
 package com.iluwatar.privateclassdata;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * 
- * Immutable stew class, protected with Private Class Data pattern
- *
- */
+/** Immutable stew class, protected with Private Class Data pattern. */
+@Slf4j
 public class ImmutableStew {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ImmutableStew.class);
-
-  private StewData data;
+  private final StewData data;
 
   public ImmutableStew(int numPotatoes, int numCarrots, int numMeat, int numPeppers) {
     data = new StewData(numPotatoes, numCarrots, numMeat, numPeppers);
   }
 
-  /**
-   * Mix the stew
-   */
+  /** Mix the stew. */
   public void mix() {
-    LOGGER.info("Mixing the immutable stew we find: {} potatoes, {} carrots, {} meat and {} peppers",
-        data.getNumPotatoes(), data.getNumCarrots(), data.getNumMeat(), data.getNumPeppers());
+    LOGGER.info(
+        "Mixing the immutable stew we find: {} potatoes, {} carrots, {} meat and {} peppers",
+        data.numPotatoes(),
+        data.numCarrots(),
+        data.numMeat(),
+        data.numPeppers());
   }
 }

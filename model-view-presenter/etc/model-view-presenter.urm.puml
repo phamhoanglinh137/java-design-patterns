@@ -5,8 +5,10 @@ package com.iluwatar.model.view.presenter {
     + main(args : String[]) {static}
   }
   class FileLoader {
+    - LOGGER : Logger {static}
     - fileName : String
     - loaded : boolean
+    - serialVersionUID : long {static}
     + FileLoader()
     + fileExists() : boolean
     + getFileName() : String
@@ -14,7 +16,7 @@ package com.iluwatar.model.view.presenter {
     + loadData() : String
     + setFileName(fileName : String)
   }
-  class FileSelectorJFrame {
+  class FileSelectorJframe {
     - area : JTextArea
     - cancel : JButton
     - contents : JLabel
@@ -25,7 +27,7 @@ package com.iluwatar.model.view.presenter {
     - panel : JPanel
     - presenter : FileSelectorPresenter
     - serialVersionUID : long {static}
-    + FileSelectorJFrame()
+    + FileSelectorJframe()
     + actionPerformed(e : ActionEvent)
     + close()
     + displayData(data : String)
@@ -39,6 +41,7 @@ package com.iluwatar.model.view.presenter {
   }
   class FileSelectorPresenter {
     - loader : FileLoader
+    - serialVersionUID : long {static}
     - view : FileSelectorView
     + FileSelectorPresenter(view : FileSelectorView)
     + cancelled()
@@ -78,10 +81,10 @@ package com.iluwatar.model.view.presenter {
     + showMessage(String) {abstract}
   }
 }
+FileSelectorJframe -->  "-presenter" FileSelectorPresenter
 FileSelectorStub -->  "-presenter" FileSelectorPresenter
-FileSelectorJFrame -->  "-presenter" FileSelectorPresenter
-FileSelectorPresenter -->  "-loader" FileLoader
 FileSelectorPresenter -->  "-view" FileSelectorView
-FileSelectorJFrame ..|> FileSelectorView 
+FileSelectorPresenter -->  "-loader" FileLoader
+FileSelectorJframe ..|> FileSelectorView 
 FileSelectorStub ..|> FileSelectorView 
 @enduml

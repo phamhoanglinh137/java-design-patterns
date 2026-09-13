@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,47 +24,40 @@
  */
 package com.iluwatar.flux.store;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import com.iluwatar.flux.action.Content;
 import com.iluwatar.flux.action.ContentAction;
 import com.iluwatar.flux.action.MenuAction;
 import com.iluwatar.flux.action.MenuItem;
 import com.iluwatar.flux.view.View;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-
-/**
- * Date: 12/12/15 - 10:18 PM
- *
- * @author Jeroen Meulemeester
- */
-public class MenuStoreTest {
+/** MenuStoreTest */
+class MenuStoreTest {
 
   @Test
-  public void testOnAction() throws Exception {
-    final MenuStore menuStore = new MenuStore();
+  void testOnAction() {
+    final var menuStore = new MenuStore();
 
-    final View view = mock(View.class);
+    final var view = mock(View.class);
     menuStore.registerView(view);
 
-    verifyZeroInteractions(view);
+    verifyNoMoreInteractions(view);
 
     // Menu should not react on content action ...
     menuStore.onAction(new ContentAction(Content.COMPANY));
-    verifyZeroInteractions(view);
+    verifyNoMoreInteractions(view);
 
     // ... but it should react on a menu action
     menuStore.onAction(new MenuAction(MenuItem.PRODUCTS));
     verify(view, times(1)).storeChanged(eq(menuStore));
     verifyNoMoreInteractions(view);
     assertEquals(MenuItem.PRODUCTS, menuStore.getSelected());
-
   }
-
 }

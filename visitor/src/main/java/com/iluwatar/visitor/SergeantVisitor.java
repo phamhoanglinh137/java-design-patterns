@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,30 +24,39 @@
  */
 package com.iluwatar.visitor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * 
- * SergeantVisitor
- *
- */
+/** SergeantVisitor. */
+@Slf4j
 public class SergeantVisitor implements UnitVisitor {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SergeantVisitor.class);
-
+  /**
+   * Soldier Visitor method.
+   *
+   * @param soldier Soldier to be visited
+   */
   @Override
-  public void visitSoldier(Soldier soldier) {
+  public void visit(Soldier soldier) {
     // Do nothing
   }
 
+  /**
+   * Sergeant Visitor method.
+   *
+   * @param sergeant Sergeant to be visited
+   */
   @Override
-  public void visitSergeant(Sergeant sergeant) {
+  public void visit(Sergeant sergeant) {
     LOGGER.info("Hello {}", sergeant);
   }
 
+  /**
+   * Commander Visitor method.
+   *
+   * @param commander Commander to be visited
+   */
   @Override
-  public void visitCommander(Commander commander) {
+  public void visit(Commander commander) {
     // Do nothing
   }
 }

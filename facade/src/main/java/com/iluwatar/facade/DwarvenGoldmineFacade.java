@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,30 +24,23 @@
  */
 package com.iluwatar.facade;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * 
  * DwarvenGoldmineFacade provides a single interface through which users can operate the subsystems.
- * 
- * This makes the goldmine easier to operate and cuts the dependencies from the goldmine user to the
- * subsystems.
  *
+ * <p>This makes the goldmine easier to operate and cuts the dependencies from the goldmine user to
+ * the subsystems.
  */
 public class DwarvenGoldmineFacade {
 
   private final List<DwarvenMineWorker> workers;
 
-  /**
-   * Constructor
-   */
+  /** Constructor. */
   public DwarvenGoldmineFacade() {
-    workers = new ArrayList<>();
-    workers.add(new DwarvenGoldDigger());
-    workers.add(new DwarvenCartOperator());
-    workers.add(new DwarvenTunnelDigger());
+    workers =
+        List.of(new DwarvenGoldDigger(), new DwarvenCartOperator(), new DwarvenTunnelDigger());
   }
 
   public void startNewDay() {
@@ -60,10 +55,8 @@ public class DwarvenGoldmineFacade {
     makeActions(workers, DwarvenMineWorker.Action.GO_HOME, DwarvenMineWorker.Action.GO_TO_SLEEP);
   }
 
-  private static void makeActions(Collection<DwarvenMineWorker> workers,
-      DwarvenMineWorker.Action... actions) {
-    for (DwarvenMineWorker worker : workers) {
-      worker.action(actions);
-    }
+  private static void makeActions(
+      Collection<DwarvenMineWorker> workers, DwarvenMineWorker.Action... actions) {
+    workers.forEach(worker -> worker.action(actions));
   }
 }

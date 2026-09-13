@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,53 +24,46 @@
  */
 package com.iluwatar.databus;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.never;
 
-/**
- * Tests for {@link DataBus}.
- *
- * @author Paul Campbell (pcampbell@kemitix.net)
- */
-public class DataBusTest {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-  @Mock
-  private Member member;
+/** Tests for {@link DataBus}. */
+class DataBusTest {
 
-  @Mock
-  private DataType event;
+  @Mock private Member member;
 
-  @Before
-  public void setUp() {
-    MockitoAnnotations.initMocks(this);
+  @Mock private DataType event;
+
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test
-  public void publishedEventIsReceivedBySubscribedMember() {
-    //given
-    final DataBus dataBus = DataBus.getInstance();
+  void publishedEventIsReceivedBySubscribedMember() {
+    // given
+    final var dataBus = DataBus.getInstance();
     dataBus.subscribe(member);
-    //when
+    // when
     dataBus.publish(event);
-    //then
+    // then
     then(member).should().accept(event);
   }
 
   @Test
-  public void publishedEventIsNotReceivedByMemberAfterUnsubscribing() {
-    //given
-    final DataBus dataBus = DataBus.getInstance();
+  void publishedEventIsNotReceivedByMemberAfterUnsubscribing() {
+    // given
+    final var dataBus = DataBus.getInstance();
     dataBus.subscribe(member);
     dataBus.unsubscribe(member);
-    //when
+    // when
     dataBus.publish(event);
-    //then
+    // then
     then(member).should(never()).accept(event);
   }
-
 }

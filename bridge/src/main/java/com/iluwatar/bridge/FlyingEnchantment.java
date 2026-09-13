@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +24,11 @@
  */
 package com.iluwatar.bridge;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * 
- * FlyingEnchantment
- *
- */
+/** FlyingEnchantment. */
+@Slf4j
 public class FlyingEnchantment implements Enchantment {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(FlyingEnchantment.class);
 
   @Override
   public void onActivate() {

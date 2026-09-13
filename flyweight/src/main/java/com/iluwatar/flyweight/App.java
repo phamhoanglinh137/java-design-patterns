@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +25,28 @@
 package com.iluwatar.flyweight;
 
 /**
- * 
  * Flyweight pattern is useful when the program needs a huge amount of objects. It provides means to
  * decrease resource usage by sharing object instances.
- * <p>
- * In this example {@link AlchemistShop} has great amount of potions on its shelves. To fill the
+ *
+ * <p>In this example {@link AlchemistShop} has great amount of potions on its shelves. To fill the
  * shelves {@link AlchemistShop} uses {@link PotionFactory} (which represents the Flyweight in this
  * example). Internally {@link PotionFactory} holds a map of the potions and lazily creates new ones
  * when requested.
- * <p>
- * To enable safe sharing, between clients and threads, Flyweight objects must be immutable.
+ *
+ * <p>To enable safe sharing, between clients and threads, Flyweight objects must be immutable.
  * Flyweight objects are by definition value objects.
- * 
  */
 public class App {
 
   /**
-   * Program entry point
-   * 
+   * Program entry point.
+   *
    * @param args command line args
    */
   public static void main(String[] args) {
-    AlchemistShop alchemistShop = new AlchemistShop();
-    alchemistShop.enumerate();
+    // create the alchemist shop with the potions
+    var alchemistShop = new AlchemistShop();
+    // a brave visitor enters the alchemist shop and drinks all the potions
+    alchemistShop.drinkPotions();
   }
 }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,51 +23,49 @@
  * THE SOFTWARE.
  */
 package com.iluwatar.promise;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- *
- *  The Promise object is used for asynchronous computations. A Promise represents an operation
- *  that hasn't completed yet, but is expected in the future.
+ * The Promise object is used for asynchronous computations. A Promise represents an operation that
+ * hasn't completed yet, but is expected in the future.
  *
  * <p>A Promise represents a proxy for a value not necessarily known when the promise is created. It
  * allows you to associate dependent promises to an asynchronous action's eventual success value or
- * failure reason. This lets asynchronous methods return values like synchronous methods: instead 
- * of the final value, the asynchronous method returns a promise of having a value at some point 
- * in the future.
+ * failure reason. This lets asynchronous methods return values like synchronous methods: instead of
+ * the final value, the asynchronous method returns a promise of having a value at some point in the
+ * future.
  *
  * <p>Promises provide a few advantages over callback objects:
+ *
  * <ul>
- * <li> Functional composition and error handling
- * <li> Prevents callback hell and provides callback aggregation
+ *   <li>Functional composition and error handling
+ *   <li>Prevents callback hell and provides callback aggregation
  * </ul>
  *
- * <p>
- * In this application the usage of promise is demonstrated with two examples:
+ * <p>In this application the usage of promise is demonstrated with two examples:
+ *
  * <ul>
- * <li>Count Lines: In this example a file is downloaded and its line count is calculated.
- * The calculated line count is then consumed and printed on console.
- * <li>Lowest Character Frequency: In this example a file is downloaded and its lowest frequency
- * character is found and printed on console. This happens via a chain of promises, we start with
- * a file download promise, then a promise of character frequency, then a promise of lowest frequency
- * character which is finally consumed and result is printed on console.
+ *   <li>Count Lines: In this example a file is downloaded and its line count is calculated. The
+ *       calculated line count is then consumed and printed on console.
+ *   <li>Lowest Character Frequency: In this example a file is downloaded and its lowest frequency
+ *       character is found and printed on console. This happens via a chain of promises, we start
+ *       with a file download promise, then a promise of character frequency, then a promise of
+ *       lowest frequency character which is finally consumed and result is printed on console.
  * </ul>
- * 
+ *
  * @see CompletableFuture
  */
+@Slf4j
 public class App {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-
-  private static final String DEFAULT_URL = "https://raw.githubusercontent.com/iluwatar/java-design-patterns/Promise/promise/README.md";
+  private static final String DEFAULT_URL =
+      "https://raw.githubusercontent.com/iluwatar/java-design-patterns/master/promise/README.md";
   private final ExecutorService executor;
   private final CountDownLatch stopLatch;
 
@@ -75,13 +75,13 @@ public class App {
   }
 
   /**
-   * Program entry point
+   * Program entry point.
+   *
    * @param args arguments
    * @throws InterruptedException if main thread is interrupted.
-   * @throws ExecutionException if an execution error occurs.
    */
-  public static void main(String[] args) throws InterruptedException, ExecutionException {
-    App app = new App();
+  public static void main(String[] args) throws InterruptedException {
+    var app = new App();
     try {
       app.promiseUsage();
     } finally {
@@ -102,11 +102,10 @@ public class App {
   private void calculateLowestFrequencyChar() {
     lowestFrequencyChar()
         .thenAccept(
-          charFrequency -> {
-            LOGGER.info("Char with lowest frequency is: {}", charFrequency);
-            taskCompleted();
-          }
-      );
+            charFrequency -> {
+              LOGGER.info("Char with lowest frequency is: {}", charFrequency);
+              taskCompleted();
+            });
   }
 
   /*
@@ -116,29 +115,26 @@ public class App {
   private void calculateLineCount() {
     countLines()
         .thenAccept(
-          count -> {
-            LOGGER.info("Line count is: {}", count);
-            taskCompleted();
-          }
-      );
+            count -> {
+              LOGGER.info("Line count is: {}", count);
+              taskCompleted();
+            });
   }
 
   /*
    * Calculate the character frequency of a file and when that promise is fulfilled,
-   * then promise to apply function to calculate lowest character frequency.
+   * then promise to apply function to calculate the lowest character frequency.
    */
   private Promise<Character> lowestFrequencyChar() {
-    return characterFrequency()
-        .thenApply(Utility::lowestFrequencyChar);
+    return characterFrequency().thenApply(Utility::lowestFrequencyChar);
   }
 
   /*
    * Download the file at DEFAULT_URL and when that promise is fulfilled,
    * then promise to apply function to calculate character frequency.
    */
-  private Promise<Map<Character, Integer>> characterFrequency() {
-    return download(DEFAULT_URL)
-        .thenApply(Utility::characterFrequency);
+  private Promise<Map<Character, Long>> characterFrequency() {
+    return download(DEFAULT_URL).thenApply(Utility::characterFrequency);
   }
 
   /*
@@ -146,8 +142,7 @@ public class App {
    * then promise to apply function to count lines in that file.
    */
   private Promise<Integer> countLines() {
-    return download(DEFAULT_URL)
-        .thenApply(Utility::countLines);
+    return download(DEFAULT_URL).thenApply(Utility::countLines);
   }
 
   /*
@@ -155,19 +150,13 @@ public class App {
    * This is an async method and does not wait until the file is downloaded.
    */
   private Promise<String> download(String urlString) {
-    Promise<String> downloadPromise = new Promise<String>()
-        .fulfillInAsync(
-            () -> {
-              return Utility.downloadFile(urlString);
-            }, executor)
+    return new Promise<String>()
+        .fulfillInAsync(() -> Utility.downloadFile(urlString), executor)
         .onError(
             throwable -> {
-              throwable.printStackTrace();
+              LOGGER.error("An error occurred: ", throwable);
               taskCompleted();
-            }
-        );
-
-    return downloadPromise;
+            });
   }
 
   private void stop() throws InterruptedException {

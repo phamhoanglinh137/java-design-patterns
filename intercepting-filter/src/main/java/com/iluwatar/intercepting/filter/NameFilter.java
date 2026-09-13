@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,17 +27,14 @@ package com.iluwatar.intercepting.filter;
 /**
  * Concrete implementation of filter. This filter checks if the input in the Name field is valid.
  * (alphanumeric)
- * 
- * @author joshzambales
- *
  */
 public class NameFilter extends AbstractFilter {
 
   @Override
   public String execute(Order order) {
-    String result = super.execute(order);
-    if (order.getName() == null || order.getName().isEmpty()
-        || order.getName().matches(".*[^\\w|\\s]+.*")) {
+    var result = super.execute(order);
+    var name = order.getName();
+    if (name == null || name.isEmpty() || name.matches(".*[^\\w|\\s]+.*")) {
       return result + "Invalid name! ";
     } else {
       return result;

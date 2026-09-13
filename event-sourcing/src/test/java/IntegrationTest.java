@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,77 +25,70 @@
 
 import static com.iluwatar.event.sourcing.app.App.ACCOUNT_OF_DAENERYS;
 import static com.iluwatar.event.sourcing.app.App.ACCOUNT_OF_JON;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.iluwatar.event.sourcing.domain.Account;
 import com.iluwatar.event.sourcing.event.AccountCreateEvent;
 import com.iluwatar.event.sourcing.event.MoneyDepositEvent;
 import com.iluwatar.event.sourcing.event.MoneyTransferEvent;
 import com.iluwatar.event.sourcing.processor.DomainEventProcessor;
+import com.iluwatar.event.sourcing.processor.JsonFileJournal;
 import com.iluwatar.event.sourcing.state.AccountAggregate;
 import java.math.BigDecimal;
 import java.util.Date;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
- * Intergartion Test for Event Sourcing state recovery
+ * Integration Test for Event-Sourcing state recovery
  *
- * Created by Serdar Hamzaogullari on 19.08.2017.
+ * <p>Created by Serdar Hamzaogullari on 19.08.2017.
  */
-public class IntegrationTest {
+class IntegrationTest {
 
-  /**
-   * The Domain event processor.
-   */
+  /** The Domain event processor. */
   private DomainEventProcessor eventProcessor;
 
-  /**
-   * Initialize.
-   */
-  @Before
-  public void initialize() {
-    eventProcessor = new DomainEventProcessor();
+  /** Initialize. */
+  @BeforeEach
+  void initialize() {
+    eventProcessor = new DomainEventProcessor(new JsonFileJournal());
   }
 
-  /**
-   * Test state recovery.
-   */
+  /** Test state recovery. */
   @Test
-  public void testStateRecovery() {
+  void testStateRecovery() {
     eventProcessor.reset();
 
-    eventProcessor.process(new AccountCreateEvent(
-        0, new Date().getTime(), ACCOUNT_OF_DAENERYS, "Daenerys Targaryen"));
+    eventProcessor.process(
+        new AccountCreateEvent(0, new Date().getTime(), ACCOUNT_OF_DAENERYS, "Daenerys Targaryen"));
 
-    eventProcessor.process(new AccountCreateEvent(
-        1, new Date().getTime(), ACCOUNT_OF_JON, "Jon Snow"));
+    eventProcessor.process(
+        new AccountCreateEvent(1, new Date().getTime(), ACCOUNT_OF_JON, "Jon Snow"));
 
-    eventProcessor.process(new MoneyDepositEvent(
-        2, new Date().getTime(), ACCOUNT_OF_DAENERYS,  new BigDecimal("100000")));
+    eventProcessor.process(
+        new MoneyDepositEvent(
+            2, new Date().getTime(), ACCOUNT_OF_DAENERYS, new BigDecimal("100000")));
 
-    eventProcessor.process(new MoneyDepositEvent(
-        3, new Date().getTime(), ACCOUNT_OF_JON,  new BigDecimal("100")));
+    eventProcessor.process(
+        new MoneyDepositEvent(3, new Date().getTime(), ACCOUNT_OF_JON, new BigDecimal("100")));
 
-    eventProcessor.process(new MoneyTransferEvent(
-        4, new Date().getTime(), new BigDecimal("10000"), ACCOUNT_OF_DAENERYS,
-        ACCOUNT_OF_JON));
+    eventProcessor.process(
+        new MoneyTransferEvent(
+            4, new Date().getTime(), new BigDecimal("10000"), ACCOUNT_OF_DAENERYS, ACCOUNT_OF_JON));
 
-    Account accountOfDaenerysBeforeShotDown = AccountAggregate.getAccount(ACCOUNT_OF_DAENERYS);
-    Account accountOfJonBeforeShotDown = AccountAggregate.getAccount(ACCOUNT_OF_JON);
+    var accountOfDaenerysBeforeShotDown = AccountAggregate.getAccount(ACCOUNT_OF_DAENERYS);
+    var accountOfJonBeforeShotDown = AccountAggregate.getAccount(ACCOUNT_OF_JON);
 
     AccountAggregate.resetState();
 
-    eventProcessor = new DomainEventProcessor();
+    eventProcessor = new DomainEventProcessor(new JsonFileJournal());
     eventProcessor.recover();
 
-    Account accountOfDaenerysAfterShotDown = AccountAggregate.getAccount(ACCOUNT_OF_DAENERYS);
-    Account accountOfJonAfterShotDown = AccountAggregate.getAccount(ACCOUNT_OF_JON);
+    var accountOfDaenerysAfterShotDown = AccountAggregate.getAccount(ACCOUNT_OF_DAENERYS);
+    var accountOfJonAfterShotDown = AccountAggregate.getAccount(ACCOUNT_OF_JON);
 
-    Assert.assertEquals(accountOfDaenerysBeforeShotDown.getMoney(),
-        accountOfDaenerysAfterShotDown.getMoney());
-    Assert
-        .assertEquals(accountOfJonBeforeShotDown.getMoney(), accountOfJonAfterShotDown.getMoney());
+    assertEquals(
+        accountOfDaenerysBeforeShotDown.getMoney(), accountOfDaenerysAfterShotDown.getMoney());
+    assertEquals(accountOfJonBeforeShotDown.getMoney(), accountOfJonAfterShotDown.getMoney());
   }
-
 }

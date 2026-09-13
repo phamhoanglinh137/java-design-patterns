@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +24,28 @@
  */
 package com.iluwatar.servicelayer.spell;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.iluwatar.servicelayer.common.BaseDaoTest;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
-
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-/**
- * Date: 12/28/15 - 11:02 PM
- *
- * @author Jeroen Meulemeester
- */
-public class SpellDaoImplTest extends BaseDaoTest<Spell, SpellDaoImpl> {
+/** SpellDaoImplTest */
+class SpellDaoImplTest extends BaseDaoTest<Spell, SpellDaoImpl> {
 
   public SpellDaoImplTest() {
     super(Spell::new, new SpellDaoImpl());
   }
 
   @Test
-  public void testFindByName() throws Exception {
-    final SpellDaoImpl dao = getDao();
-    final List<Spell> allSpells = dao.findAll();
-    for (final Spell spell : allSpells) {
-      final Spell spellByName = dao.findByName(spell.getName());
+  void testFindByName() {
+    final var dao = getDao();
+    final var allSpells = dao.findAll();
+    for (final var spell : allSpells) {
+      final var spellByName = dao.findByName(spell.getName());
       assertNotNull(spellByName);
       assertEquals(spell.getId(), spellByName.getId());
       assertEquals(spell.getName(), spellByName.getName());
     }
   }
-
 }

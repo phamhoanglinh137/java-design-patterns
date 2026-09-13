@@ -1,17 +1,19 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
- * <p>
+ * Copyright © 2014-2022 Ilkka Seppälä
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * <p>
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * <p>
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,19 +24,15 @@
  */
 package com.iluwatar.pageobject.pages;
 
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlNumberInput;
-import com.gargoylesoftware.htmlunit.html.HtmlOption;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSelect;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
-
 import java.io.IOException;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.HtmlNumberInput;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlSelect;
+import org.htmlunit.html.HtmlSubmitInput;
+import org.htmlunit.html.HtmlTextInput;
 
-/**
- * Page Object encapsulating the Album Page (album-page.html)
- */
+/** Page Object encapsulating the Album Page (album-page.html) */
 public class AlbumPage extends Page {
 
   private static final String ALBUM_PAGE_HTML_FILE = "album-page.html";
@@ -42,14 +40,10 @@ public class AlbumPage extends Page {
 
   private HtmlPage page;
 
-
-  /**
-   * Constructor
-   */
+  /** Constructor */
   public AlbumPage(WebClient webClient) {
     super(webClient);
   }
-
 
   /**
    * Navigates to the album page
@@ -65,15 +59,11 @@ public class AlbumPage extends Page {
     return this;
   }
 
-
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   public boolean isAt() {
     return "Album Page".equals(page.getTitleText());
   }
-
 
   /**
    * Sets the album title input text field
@@ -82,11 +72,10 @@ public class AlbumPage extends Page {
    * @return {@link AlbumPage}
    */
   public AlbumPage changeAlbumTitle(String albumTitle) {
-    HtmlTextInput albumTitleInputTextField = (HtmlTextInput) page.getElementById("albumTitle");
+    var albumTitleInputTextField = (HtmlTextInput) page.getElementById("albumTitle");
     albumTitleInputTextField.setText(albumTitle);
     return this;
   }
-
 
   /**
    * Sets the artist input text field
@@ -95,11 +84,10 @@ public class AlbumPage extends Page {
    * @return {@link AlbumPage}
    */
   public AlbumPage changeArtist(String artist) {
-    HtmlTextInput artistInputTextField = (HtmlTextInput) page.getElementById("albumArtist");
+    var artistInputTextField = (HtmlTextInput) page.getElementById("albumArtist");
     artistInputTextField.setText(artist);
     return this;
   }
-
 
   /**
    * Selects the select's option value based on the year value given
@@ -108,12 +96,11 @@ public class AlbumPage extends Page {
    * @return {@link AlbumPage}
    */
   public AlbumPage changeAlbumYear(int year) {
-    HtmlSelect albumYearSelectOption = (HtmlSelect) page.getElementById("albumYear");
-    HtmlOption yearOption = albumYearSelectOption.getOptionByValue(Integer.toString(year));
+    var albumYearSelectOption = (HtmlSelect) page.getElementById("albumYear");
+    var yearOption = albumYearSelectOption.getOptionByValue(Integer.toString(year));
     albumYearSelectOption.setSelectedAttribute(yearOption, true);
     return this;
   }
-
 
   /**
    * Sets the album rating input text field
@@ -122,7 +109,7 @@ public class AlbumPage extends Page {
    * @return {@link AlbumPage}
    */
   public AlbumPage changeAlbumRating(String albumRating) {
-    HtmlTextInput albumRatingInputTextField = (HtmlTextInput) page.getElementById("albumRating");
+    var albumRatingInputTextField = (HtmlTextInput) page.getElementById("albumRating");
     albumRatingInputTextField.setText(albumRating);
     return this;
   }
@@ -134,11 +121,10 @@ public class AlbumPage extends Page {
    * @return {@link AlbumPage}
    */
   public AlbumPage changeNumberOfSongs(int numberOfSongs) {
-    HtmlNumberInput numberOfSongsNumberField = (HtmlNumberInput) page.getElementById("numberOfSongs");
+    var numberOfSongsNumberField = (HtmlNumberInput) page.getElementById("numberOfSongs");
     numberOfSongsNumberField.setText(Integer.toString(numberOfSongs));
     return this;
   }
-
 
   /**
    * Cancel changes made by clicking the cancel button
@@ -146,7 +132,7 @@ public class AlbumPage extends Page {
    * @return {@link AlbumListPage}
    */
   public AlbumListPage cancelChanges() {
-    HtmlSubmitInput cancelButton = (HtmlSubmitInput) page.getElementById("cancelButton");
+    var cancelButton = (HtmlSubmitInput) page.getElementById("cancelButton");
     try {
       cancelButton.click();
     } catch (IOException e) {
@@ -155,14 +141,13 @@ public class AlbumPage extends Page {
     return new AlbumListPage(webClient);
   }
 
-
   /**
    * Saves changes made by clicking the save button
    *
    * @return {@link AlbumPage}
    */
   public AlbumPage saveChanges() {
-    HtmlSubmitInput saveButton = (HtmlSubmitInput) page.getElementById("saveButton");
+    var saveButton = (HtmlSubmitInput) page.getElementById("saveButton");
     try {
       saveButton.click();
     } catch (IOException e) {
@@ -170,5 +155,4 @@ public class AlbumPage extends Page {
     }
     return this;
   }
-
 }

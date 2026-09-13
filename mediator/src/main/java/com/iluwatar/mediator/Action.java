@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,27 +24,22 @@
  */
 package com.iluwatar.mediator;
 
-/**
- * 
- * Action enumeration.
- *
- */
+import lombok.Getter;
+
+/** Action enumeration. */
 public enum Action {
+  HUNT("hunted a rabbit", "arrives for dinner"),
+  TALE("tells a tale", "comes to listen"),
+  GOLD("found gold", "takes his share of the gold"),
+  ENEMY("spotted enemies", "runs for cover"),
+  NONE("", "");
 
-  HUNT("hunted a rabbit", "arrives for dinner"), TALE("tells a tale", "comes to listen"), GOLD(
-      "found gold", "takes his share of the gold"), ENEMY("spotted enemies", "runs for cover"), NONE(
-      "", "");
-
-  private String title;
-  private String description;
+  private final String title;
+  @Getter private final String description;
 
   Action(String title, String description) {
     this.title = title;
     this.description = description;
-  }
-
-  public String getDescription() {
-    return description;
   }
 
   public String toString() {

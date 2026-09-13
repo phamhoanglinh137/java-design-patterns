@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +24,14 @@
  */
 package com.iluwatar.intercepting.filter;
 
-/**
- * Concrete implementation of filter This checks for the deposit code
- * 
- * @author joshzambales
- *
- */
+/** Concrete implementation of filter This checks for the deposit code. */
 public class DepositFilter extends AbstractFilter {
 
   @Override
   public String execute(Order order) {
-    String result = super.execute(order);
-    if (order.getDepositNumber() == null || order.getDepositNumber().isEmpty()) {
+    var result = super.execute(order);
+    var depositNumber = order.getDepositNumber();
+    if (depositNumber == null || depositNumber.isEmpty()) {
       return result + "Invalid deposit number! ";
     } else {
       return result;

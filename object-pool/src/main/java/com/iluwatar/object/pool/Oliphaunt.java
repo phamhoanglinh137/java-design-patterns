@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +24,26 @@
  */
 package com.iluwatar.object.pool;
 
-/**
- * 
- * Oliphaunts are expensive to create
- *
- */
+import java.util.concurrent.atomic.AtomicInteger;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+
+/** Oliphaunts are expensive to create. */
+@Slf4j
 public class Oliphaunt {
 
-  private static int counter = 1;
+  private static final AtomicInteger counter = new AtomicInteger(0);
 
-  private final int id;
+  @Getter private final int id;
 
-  /**
-   * Constructor
-   */
+  /** Constructor. */
   public Oliphaunt() {
-    id = counter++;
+    id = counter.incrementAndGet();
     try {
       Thread.sleep(1000);
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      LOGGER.error("Error occurred: ", e);
     }
-  }
-
-  public int getId() {
-    return id;
   }
 
   @Override

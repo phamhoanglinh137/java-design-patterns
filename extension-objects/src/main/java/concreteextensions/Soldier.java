@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +25,15 @@
 package concreteextensions;
 
 import abstractextensions.SoldierExtension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import units.SoldierUnit;
 
-/**
- * Class defining Soldier
- */
-public class Soldier implements SoldierExtension {
-
-  private SoldierUnit unit;
-
-  public Soldier(SoldierUnit soldierUnit) {
-    this.unit = soldierUnit;
-  }
-
-  final Logger logger = LoggerFactory.getLogger(Soldier.class);
+/** Class defining Soldier. */
+@Slf4j
+public record Soldier(SoldierUnit unit) implements SoldierExtension {
 
   @Override
   public void soldierReady() {
-    logger.info("[Solider] " + unit.getName() + "  is ready!");
+    LOGGER.info("[Soldier] " + unit.getName() + " is ready!");
   }
 }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,41 +24,34 @@
  */
 package com.iluwatar.flyweight;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-/**
- * Date: 12/12/15 - 10:54 PM
- *
- * @author Jeroen Meulemeester
- */
-public class AlchemistShopTest {
+/** AlchemistShopTest */
+class AlchemistShopTest {
 
   @Test
-  public void testShop() throws Exception {
-    final AlchemistShop shop = new AlchemistShop();
+  void testShop() {
+    final var shop = new AlchemistShop();
 
-    final List<Potion> bottomShelf = shop.getBottomShelf();
+    final var bottomShelf = shop.getBottomShelf();
     assertNotNull(bottomShelf);
     assertEquals(5, bottomShelf.size());
 
-    final List<Potion> topShelf = shop.getTopShelf();
+    final var topShelf = shop.getTopShelf();
     assertNotNull(topShelf);
     assertEquals(8, topShelf.size());
 
-    final List<Potion> allPotions = new ArrayList<>();
+    final var allPotions = new ArrayList<Potion>();
     allPotions.addAll(topShelf);
     allPotions.addAll(bottomShelf);
 
     // There are 13 potion instances, but only 5 unique instance types
     assertEquals(13, allPotions.size());
-    assertEquals(5, allPotions.stream().map(System::identityHashCode).distinct().count());
-
+    assertEquals(5, new HashSet<>(allPotions).size());
   }
-
 }

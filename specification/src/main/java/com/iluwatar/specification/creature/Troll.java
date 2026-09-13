@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +25,18 @@
 package com.iluwatar.specification.creature;
 
 import com.iluwatar.specification.property.Color;
+import com.iluwatar.specification.property.Mass;
 import com.iluwatar.specification.property.Movement;
 import com.iluwatar.specification.property.Size;
 
-/**
- * 
- * Troll creature.
- *
- */
+/** Troll creature. */
 public class Troll extends AbstractCreature {
 
   public Troll() {
-    super("Troll", Size.LARGE, Movement.WALKING, Color.DARK);
+    this(new Mass(4000.0));
+  }
+
+  public Troll(Mass mass) {
+    super("Troll", Size.LARGE, Movement.WALKING, Color.DARK, mass);
   }
 }

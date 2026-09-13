@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,29 +24,40 @@
  */
 package com.iluwatar.caching;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.iluwatar.caching.database.DbManager;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- *
- * The caching strategies are implemented in this class.
- *
- */
+/** The caching strategies are implemented in this class. */
+@Slf4j
 public class CacheStore {
+  /** Cache capacity. */
+  private static final int CAPACITY = 3;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CacheStore.class);
+  /** Lru cache see {@link LruCache}. */
+  private LruCache cache;
 
-  static LruCache cache;
+  /** DbManager. */
+  private final DbManager dbManager;
 
-  private CacheStore() {
+  /**
+   * Cache Store.
+   *
+   * @param dataBaseManager {@link DbManager}
+   */
+  public CacheStore(final DbManager dataBaseManager) {
+    this.dbManager = dataBaseManager;
+    initCapacity(CAPACITY);
   }
 
   /**
-   * Init cache capacity
+   * Init cache capacity.
+   *
+   * @param capacity int
    */
-  public static void initCapacity(int capacity) {
+  public void initCapacity(final int capacity) {
     if (cache == null) {
       cache = new LruCache(capacity);
     } else {
@@ -53,130 +66,145 @@ public class CacheStore {
   }
 
   /**
-   * Get user account using read-through cache
+   * Get user account using read-through cache.
+   *
+   * @param userId {@link String}
+   * @return {@link UserAccount}
    */
-  public static UserAccount readThrough(String userId) {
+  public UserAccount readThrough(final String userId) {
     if (cache.contains(userId)) {
-      LOGGER.info("# Cache Hit!");
+      LOGGER.info("# Found in Cache!");
       return cache.get(userId);
     }
-    LOGGER.info("# Cache Miss!");
-    UserAccount userAccount = DbManager.readFromDb(userId);
+    LOGGER.info("# Not found in cache! Go to DB!!");
+    UserAccount userAccount = dbManager.readFromDb(userId);
     cache.set(userId, userAccount);
     return userAccount;
   }
 
   /**
-   * Get user account using write-through cache
+   * Get user account using write-through cache.
+   *
+   * @param userAccount {@link UserAccount}
    */
-  public static void writeThrough(UserAccount userAccount) {
+  public void writeThrough(final UserAccount userAccount) {
     if (cache.contains(userAccount.getUserId())) {
-      DbManager.updateDb(userAccount);
+      dbManager.updateDb(userAccount);
     } else {
-      DbManager.writeToDb(userAccount);
+      dbManager.writeToDb(userAccount);
     }
     cache.set(userAccount.getUserId(), userAccount);
   }
 
   /**
-   * Get user account using write-around cache
+   * Get user account using write-around cache.
+   *
+   * @param userAccount {@link UserAccount}
    */
-  public static void writeAround(UserAccount userAccount) {
+  public void writeAround(final UserAccount userAccount) {
     if (cache.contains(userAccount.getUserId())) {
-      DbManager.updateDb(userAccount);
-      cache.invalidate(userAccount.getUserId()); // Cache data has been updated -- remove older
-                                                 // version from cache.
+      dbManager.updateDb(userAccount);
+      // Cache data has been updated -- remove older
+      cache.invalidate(userAccount.getUserId());
+      // version from cache.
     } else {
-      DbManager.writeToDb(userAccount);
+      dbManager.writeToDb(userAccount);
     }
   }
 
   /**
-   * Get user account using read-through cache with write-back policy
+   * Get user account using read-through cache with write-back policy.
+   *
+   * @param userId {@link String}
+   * @return {@link UserAccount}
    */
-  public static UserAccount readThroughWithWriteBackPolicy(String userId) {
+  public UserAccount readThroughWithWriteBackPolicy(final String userId) {
     if (cache.contains(userId)) {
-      LOGGER.info("# Cache Hit!");
+      LOGGER.info("# Found in cache!");
       return cache.get(userId);
     }
-    LOGGER.info("# Cache Miss!");
-    UserAccount userAccount = DbManager.readFromDb(userId);
+    LOGGER.info("# Not found in Cache!");
+    UserAccount userAccount = dbManager.readFromDb(userId);
     if (cache.isFull()) {
       LOGGER.info("# Cache is FULL! Writing LRU data to DB...");
       UserAccount toBeWrittenToDb = cache.getLruData();
-      DbManager.upsertDb(toBeWrittenToDb);
+      dbManager.upsertDb(toBeWrittenToDb);
     }
     cache.set(userId, userAccount);
     return userAccount;
   }
 
   /**
-   * Set user account
+   * Set user account.
+   *
+   * @param userAccount {@link UserAccount}
    */
-  public static void writeBehind(UserAccount userAccount) {
+  public void writeBehind(final UserAccount userAccount) {
     if (cache.isFull() && !cache.contains(userAccount.getUserId())) {
       LOGGER.info("# Cache is FULL! Writing LRU data to DB...");
       UserAccount toBeWrittenToDb = cache.getLruData();
-      DbManager.upsertDb(toBeWrittenToDb);
+      dbManager.upsertDb(toBeWrittenToDb);
     }
     cache.set(userAccount.getUserId(), userAccount);
   }
 
-  /**
-   * Clears cache
-   */
-  public static void clearCache() {
+  /** Clears cache. */
+  public void clearCache() {
     if (cache != null) {
       cache.clear();
     }
   }
 
-  /**
-   * Writes remaining content in the cache into the DB.
-   */
-  public static void flushCache() {
+  /** Writes remaining content in the cache into the DB. */
+  public void flushCache() {
     LOGGER.info("# flushCache...");
-    if (null == cache) {
-      return;
-    }
-    List<UserAccount> listOfUserAccounts = cache.getCacheDataInListForm();
-    for (UserAccount userAccount : listOfUserAccounts) {
-      DbManager.upsertDb(userAccount);
-    }
+    Optional.ofNullable(cache)
+        .map(LruCache::getCacheDataInListForm)
+        .orElse(List.of())
+        .forEach(dbManager::updateDb);
+    dbManager.disconnect();
   }
 
   /**
-   * Print user accounts
+   * Print user accounts.
+   *
+   * @return {@link String}
    */
-  public static String print() {
-    List<UserAccount> listOfUserAccounts = cache.getCacheDataInListForm();
-    StringBuilder sb = new StringBuilder();
-    sb.append("\n--CACHE CONTENT--\n");
-    for (UserAccount userAccount : listOfUserAccounts) {
-      sb.append(userAccount.toString() + "\n");
-    }
-    sb.append("----\n");
-    return sb.toString();
+  public String print() {
+    return Optional.ofNullable(cache)
+        .map(LruCache::getCacheDataInListForm)
+        .orElse(List.of())
+        .stream()
+        .map(userAccount -> userAccount.toString() + "\n")
+        .collect(Collectors.joining("", "\n--CACHE CONTENT--\n", "----"));
   }
 
   /**
-   * Delegate to backing cache store
+   * Delegate to backing cache store.
+   *
+   * @param userId {@link String}
+   * @return {@link UserAccount}
    */
-  public static UserAccount get(String userId) {
+  public UserAccount get(final String userId) {
     return cache.get(userId);
   }
 
   /**
-   * Delegate to backing cache store
+   * Delegate to backing cache store.
+   *
+   * @param userId {@link String}
+   * @param userAccount {@link UserAccount}
    */
-  public static void set(String userId, UserAccount userAccount) {
+  public void set(final String userId, final UserAccount userAccount) {
     cache.set(userId, userAccount);
   }
 
   /**
-   * Delegate to backing cache store
+   * Delegate to backing cache store.
+   *
+   * @param userId {@link String}
    */
-  public static void invalidate(String userId) {
+  public void invalidate(final String userId) {
     cache.invalidate(userId);
   }
 }

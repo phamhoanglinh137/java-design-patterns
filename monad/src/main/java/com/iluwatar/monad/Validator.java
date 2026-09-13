@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,36 +31,33 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * Class representing Monad design pattern. Monad is a way of chaining operations on the
- * given object together step by step. In Validator each step results in either success or
- * failure indicator, giving a way of receiving each of them easily and finally getting
- * validated object or list of exceptions.
+ * Class representing Monad design pattern. Monad is a way of chaining operations on the given
+ * object together step by step. In Validator each step results in either success or failure
+ * indicator, giving a way of receiving each of them easily and finally getting validated object or
+ * list of exceptions.
  *
  * @param <T> Placeholder for an object.
  */
 public class Validator<T> {
-  /**
-   * Object that is validated
-   */
-  private final T t;
+  /** Object that is validated. */
+  private final T obj;
 
-  /**
-   * List of exception thrown during validation.
-   */
+  /** List of exception thrown during validation. */
   private final List<Throwable> exceptions = new ArrayList<>();
 
   /**
    * Creates a monadic value of given object.
-   * @param t object to be validated
+   *
+   * @param obj object to be validated
    */
-  private Validator(T t) {
-    this.t = t;
+  private Validator(T obj) {
+    this.obj = obj;
   }
 
   /**
-   * Creates validator against given object
+   * Creates validator against given object.
    *
-   * @param t   object to be validated
+   * @param t object to be validated
    * @param <T> object's type
    * @return new instance of a validator
    */
@@ -67,32 +66,36 @@ public class Validator<T> {
   }
 
   /**
-   * @param validation one argument boolean-valued function that
-   *                   represents one step of validation. Adds exception to main validation exception
-   *                   list when single step validation ends with failure.
-   * @param message    error message when object is invalid
+   * Checks if the validation is successful.
+   *
+   * @param validation one argument boolean-valued function that represents one step of validation.
+   *     Adds exception to main validation exception list when single step validation ends with
+   *     failure.
+   * @param message error message when object is invalid
    * @return this
    */
-  public Validator<T> validate(Predicate<T> validation, String message) {
-    if (!validation.test(t)) {
+  public Validator<T> validate(Predicate<? super T> validation, String message) {
+    if (!validation.test(obj)) {
       exceptions.add(new IllegalStateException(message));
     }
     return this;
   }
 
   /**
-   * Extension for the {@link Validator#validate(Function, Predicate, String)} method,
-   * dedicated for objects, that need to be projected before requested validation.
+   * Extension for the {@link Validator#validate(Predicate, String)} method, dedicated for objects,
+   * that need to be projected before requested validation.
    *
-   * @param projection function that gets an objects, and returns projection representing
-   *                   element to be validated.
-   * @param validation see {@link Validator#validate(Function, Predicate, String)}
-   * @param message    see {@link Validator#validate(Function, Predicate, String)}
-   * @param <U>        see {@link Validator#validate(Function, Predicate, String)}
+   * @param projection function that gets an objects, and returns projection representing element to
+   *     be validated.
+   * @param validation see {@link Validator#validate(Predicate, String)}
+   * @param message see {@link Validator#validate(Predicate, String)}
+   * @param <U> see {@link Validator#validate(Predicate, String)}
    * @return this
    */
-  public <U> Validator<T> validate(Function<T, U> projection, Predicate<U> validation,
-                                   String message) {
+  public <U> Validator<T> validate(
+      Function<? super T, ? extends U> projection,
+      Predicate<? super U> validation,
+      String message) {
     return validate(projection.andThen(validation::test)::apply, message);
   }
 
@@ -104,9 +107,9 @@ public class Validator<T> {
    */
   public T get() throws IllegalStateException {
     if (exceptions.isEmpty()) {
-      return t;
+      return obj;
     }
-    IllegalStateException e = new IllegalStateException();
+    var e = new IllegalStateException();
     exceptions.forEach(e::addSuppressed);
     throw e;
   }

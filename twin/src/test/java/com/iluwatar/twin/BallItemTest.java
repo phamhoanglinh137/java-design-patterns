@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +24,8 @@
  */
 package com.iluwatar.twin;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -33,54 +35,51 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import java.util.LinkedList;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InOrder;
+import java.util.stream.IntStream;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
-/**
- * Date: 12/30/15 - 18:44 PM
- *
- * @author Jeroen Meulemeester
- */
-public class BallItemTest {
+/** BallItemTest */
+class BallItemTest {
 
   private InMemoryAppender appender;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     appender = new InMemoryAppender();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     appender.stop();
   }
 
   @Test
-  public void testClick() {
-    final BallThread ballThread = mock(BallThread.class);
-    final BallItem ballItem = new BallItem();
+  void testClick() {
+    final var ballThread = mock(BallThread.class);
+    final var ballItem = new BallItem();
     ballItem.setTwin(ballThread);
 
-    final InOrder inOrder = inOrder(ballThread);
+    final var inOrder = inOrder(ballThread);
 
-    for (int i = 0; i < 10; i++) {
-      ballItem.click();
-      inOrder.verify(ballThread).suspendMe();
-
-      ballItem.click();
-      inOrder.verify(ballThread).resumeMe();
-    }
+    IntStream.range(0, 10)
+        .forEach(
+            i -> {
+              ballItem.click();
+              inOrder.verify(ballThread).suspendMe();
+              ballItem.click();
+              inOrder.verify(ballThread).resumeMe();
+            });
 
     inOrder.verifyNoMoreInteractions();
   }
 
   @Test
-  public void testDoDraw() {
-    final BallItem ballItem = new BallItem();
-    final BallThread ballThread = mock(BallThread.class);
+  void testDoDraw() {
+    final var ballItem = new BallItem();
+    final var ballThread = mock(BallThread.class);
     ballItem.setTwin(ballThread);
 
     ballItem.draw();
@@ -92,9 +91,9 @@ public class BallItemTest {
   }
 
   @Test
-  public void testMove() {
-    final BallItem ballItem = new BallItem();
-    final BallThread ballThread = mock(BallThread.class);
+  void testMove() {
+    final var ballItem = new BallItem();
+    final var ballThread = mock(BallThread.class);
     ballItem.setTwin(ballThread);
 
     ballItem.move();
@@ -104,11 +103,9 @@ public class BallItemTest {
     assertEquals(1, appender.getLogSize());
   }
 
-  /**
-   * Logging Appender Implementation
-   */
-  public class InMemoryAppender extends AppenderBase<ILoggingEvent> {
-    private List<ILoggingEvent> log = new LinkedList<>();
+  /** Logging Appender Implementation */
+  static class InMemoryAppender extends AppenderBase<ILoggingEvent> {
+    private final List<ILoggingEvent> log = new LinkedList<>();
 
     public InMemoryAppender() {
       ((Logger) LoggerFactory.getLogger("root")).addAppender(this);
@@ -128,5 +125,4 @@ public class BallItemTest {
       return log.size();
     }
   }
-
 }

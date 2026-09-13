@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +25,18 @@
 package com.iluwatar.specification.creature;
 
 import com.iluwatar.specification.property.Color;
+import com.iluwatar.specification.property.Mass;
 import com.iluwatar.specification.property.Movement;
 import com.iluwatar.specification.property.Size;
 
-/**
- * 
- * Dragon creature.
- *
- */
+/** Dragon creature. */
 public class Dragon extends AbstractCreature {
 
   public Dragon() {
-    super("Dragon", Size.LARGE, Movement.FLYING, Color.RED);
+    this(new Mass(39300.0));
+  }
+
+  public Dragon(Mass mass) {
+    super("Dragon", Size.LARGE, Movement.FLYING, Color.RED, mass);
   }
 }

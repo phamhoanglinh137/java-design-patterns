@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +25,14 @@
 package com.iluwatar.adapter;
 
 /**
- *
  * Adapter class. Adapts the interface of the device ({@link FishingBoat}) into {@link RowingBoat}
  * interface expected by the client ({@link Captain}).
- *
  */
 public class FishingBoatAdapter implements RowingBoat {
 
-  private FishingBoat boat;
+  private final FishingBoat boat = new FishingBoat();
 
-  public FishingBoatAdapter() {
-    boat = new FishingBoat();
-  }
-
-  @Override
-  public void row() {
+  public final void row() {
     boat.sail();
   }
 }

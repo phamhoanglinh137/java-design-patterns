@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +24,25 @@
  */
 package com.iluwatar.command;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * The Command pattern is a behavioral design pattern in which an object is used to encapsulate all
  * information needed to perform an action or trigger an event at a later time. This information
  * includes the method name, the object that owns the method and values for the method parameters.
- * 
- * <p>Four terms always associated with the command pattern are command, receiver, invoker and 
- * client. A command object (spell) knows about the receiver (target) and invokes a method of 
- * the receiver.Values for parameters of the receiver method are stored in the command. The receiver
- * then does the work. An invoker object (wizard) knows how to execute a command, and optionally 
- * does bookkeeping about the command execution. The invoker does not know anything about a 
- * concrete command, it knows only about command interface. Both an invoker object and several 
- * command objects are held by a client object (app). The client decides which commands to execute
- * at which points. To execute a command, it passes the command object to the invoker object.
+ *
+ * <p>Four terms always associated with the command pattern are command, receiver, invoker and
+ * client. A command object (spell) knows about the receiver (target) and invokes a method of the
+ * receiver.Values for parameters of the receiver method are stored in the command. The receiver
+ * then does the work. An invoker object (wizard) knows how to execute a command, and optionally
+ * does bookkeeping about the command execution. The invoker does not know anything about a concrete
+ * command, it knows only about command interface. Both an invoker object and several command
+ * objects are held by a client object (app). The client decides which commands to execute at which
+ * points. To execute a command, it passes the command object to the invoker object.
  */
-public class CommandTest {
+class CommandTest {
 
   private static final String GOBLIN = "Goblin";
 
@@ -50,15 +52,15 @@ public class CommandTest {
    * wizard keeps track of the spells undone, so they can be redone.
    */
   @Test
-  public void testCommand() {
+  void testCommand() {
 
-    Wizard wizard = new Wizard();
-    Goblin goblin = new Goblin();
+    var wizard = new Wizard();
+    var goblin = new Goblin();
 
-    wizard.castSpell(new ShrinkSpell(), goblin);
+    wizard.castSpell(goblin::changeSize);
     verifyGoblin(goblin, GOBLIN, Size.SMALL, Visibility.VISIBLE);
 
-    wizard.castSpell(new InvisibilitySpell(), goblin);
+    wizard.castSpell(goblin::changeVisibility);
     verifyGoblin(goblin, GOBLIN, Size.SMALL, Visibility.INVISIBLE);
 
     wizard.undoLastSpell();
@@ -81,13 +83,15 @@ public class CommandTest {
    * @param goblin a goblin object whose state is to be verified against other parameters
    * @param expectedName expectedName of the goblin
    * @param expectedSize expected size of the goblin
-   * @param expectedVisibilty exepcted visibility of the goblin
+   * @param expectedVisibility expected visibility of the goblin
    */
-  private void verifyGoblin(Goblin goblin, String expectedName, Size expectedSize,
-      Visibility expectedVisibilty) {
-    assertEquals("Goblin's name must be same as expectedName", expectedName, goblin.toString());
-    assertEquals("Goblin's size must be same as expectedSize", expectedSize, goblin.getSize());
-    assertEquals("Goblin's visibility must be same as expectedVisibility", expectedVisibilty,
-        goblin.getVisibility());
+  private void verifyGoblin(
+      Goblin goblin, String expectedName, Size expectedSize, Visibility expectedVisibility) {
+    assertEquals(expectedName, goblin.toString(), "Goblin's name must be same as expectedName");
+    assertEquals(expectedSize, goblin.getSize(), "Goblin's size must be same as expectedSize");
+    assertEquals(
+        expectedVisibility,
+        goblin.getVisibility(),
+        "Goblin's visibility must be same as expectedVisibility");
   }
 }

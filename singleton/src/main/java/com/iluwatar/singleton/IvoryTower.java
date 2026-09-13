@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,19 +24,18 @@
  */
 package com.iluwatar.singleton;
 
-/**
- * Singleton class. Eagerly initialized static instance guarantees thread safety.
- */
+/** Singleton class. Eagerly initialized static instance guarantees thread safety. */
 public final class IvoryTower {
 
-  /**
-   * Private constructor so nobody can instantiate the class.
-   */
-  private IvoryTower() {}
+  /** Private constructor so nobody can instantiate the class. */
+  private IvoryTower() {
+    // to prevent instantiating by Reflection call
+    if (INSTANCE != null) {
+      throw new IllegalStateException("Already initialized.");
+    }
+  }
 
-  /**
-   * Static to class instance of the class.
-   */
+  /** Static to class instance of the class. */
   private static final IvoryTower INSTANCE = new IvoryTower();
 
   /**

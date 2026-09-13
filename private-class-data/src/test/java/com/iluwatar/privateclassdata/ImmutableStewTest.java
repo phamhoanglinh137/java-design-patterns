@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,41 +24,35 @@
  */
 package com.iluwatar.privateclassdata;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.iluwatar.privateclassdata.utils.InMemoryAppender;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-
-/**
- * Date: 12/27/15 - 10:46 PM
- *
- * @author Jeroen Meulemeester
- */
-public class ImmutableStewTest {
+/** ImmutableStewTest */
+class ImmutableStewTest {
 
   private InMemoryAppender appender;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     appender = new InMemoryAppender();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     appender.stop();
   }
 
-  /**
-   * Verify if mixing the stew doesn't change the internal state
-   */
+  /** Verify if mixing the stew doesn't change the internal state */
   @Test
-  public void testMix() {
-    final Stew stew = new Stew(1, 2, 3, 4);
-    final String expectedMessage = "Mixing the stew we find: 1 potatoes, 2 carrots, 3 meat and 4 peppers";
+  void testMix() {
+    var stew = new Stew(1, 2, 3, 4);
+    var expectedMessage = "Mixing the stew we find: 1 potatoes, 2 carrots, 3 meat and 4 peppers";
 
-    for (int i = 0; i < 20; i++) {
+    for (var i = 0; i < 20; i++) {
       stew.mix();
       assertEquals(expectedMessage, appender.getLastMessage());
     }
@@ -64,20 +60,22 @@ public class ImmutableStewTest {
     assertEquals(20, appender.getLogSize());
   }
 
-  /**
-   * Verify if tasting the stew actually removes one of each ingredient
-   */
+  /** Verify if tasting the stew actually removes one of each ingredient */
   @Test
-  public void testDrink() {
-    final Stew stew = new Stew(1, 2, 3, 4);
+  void testDrink() {
+    final var stew = new Stew(1, 2, 3, 4);
     stew.mix();
 
-    assertEquals("Mixing the stew we find: 1 potatoes, 2 carrots, 3 meat and 4 peppers",  appender.getLastMessage());
+    assertEquals(
+        "Mixing the stew we find: 1 potatoes, 2 carrots, 3 meat and 4 peppers",
+        appender.getLastMessage());
 
     stew.taste();
-    assertEquals("Tasting the stew",  appender.getLastMessage());
+    assertEquals("Tasting the stew", appender.getLastMessage());
 
     stew.mix();
-    assertEquals("Mixing the stew we find: 0 potatoes, 1 carrots, 2 meat and 3 peppers",  appender.getLastMessage());
+    assertEquals(
+        "Mixing the stew we find: 0 potatoes, 1 carrots, 2 meat and 3 peppers",
+        appender.getLastMessage());
   }
 }

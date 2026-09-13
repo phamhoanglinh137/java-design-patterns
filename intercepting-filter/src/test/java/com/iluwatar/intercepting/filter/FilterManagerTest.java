@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,39 +24,35 @@
  */
 package com.iluwatar.intercepting.filter;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-/**
- * Date: 12/13/15 - 3:01 PM
- *
- * @author Jeroen Meulemeester
- */
-public class FilterManagerTest {
+import org.junit.jupiter.api.Test;
+
+/** FilterManagerTest */
+class FilterManagerTest {
 
   @Test
-  public void testFilterRequest() throws Exception {
-    final Target target = mock(Target.class);
-    final FilterManager filterManager = new FilterManager();
+  void testFilterRequest() {
+    final var target = mock(Target.class);
+    final var filterManager = new FilterManager();
     assertEquals("RUNNING...", filterManager.filterRequest(mock(Order.class)));
-    verifyZeroInteractions(target);
+    verifyNoMoreInteractions(target);
   }
 
   @Test
-  public void testAddFilter() throws Exception {
-    final Target target = mock(Target.class);
-    final FilterManager filterManager = new FilterManager();
+  void testAddFilter() {
+    final var target = mock(Target.class);
+    final var filterManager = new FilterManager();
 
-    verifyZeroInteractions(target);
+    verifyNoMoreInteractions(target);
 
-    final Filter filter = mock(Filter.class);
+    final var filter = mock(Filter.class);
     when(filter.execute(any(Order.class))).thenReturn("filter");
 
     filterManager.addFilter(filter);
@@ -63,6 +61,6 @@ public class FilterManagerTest {
     assertEquals("filter", filterManager.filterRequest(order));
 
     verify(filter, times(1)).execute(any(Order.class));
-    verifyZeroInteractions(target, filter, order);
+    verifyNoMoreInteractions(target, filter, order);
   }
 }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +28,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Handles the routing of {@link Event} messages to associated handlers.
- * A {@link HashMap} is used to store the association between events and their respective handlers.
+ * Handles the routing of {@link Event} messages to associated handlers. A {@link HashMap} is used
+ * to store the association between events and their respective handlers.
  */
 public class EventDispatcher {
 
-  private Map<Class<? extends Event>, Handler<? extends Event>> handlers;
+  private final Map<Class<? extends Event>, Handler<? extends Event>> handlers;
 
   public EventDispatcher() {
     handlers = new HashMap<>();
@@ -41,24 +43,22 @@ public class EventDispatcher {
    * Links an {@link Event} to a specific {@link Handler}.
    *
    * @param eventType The {@link Event} to be registered
-   * @param handler   The {@link Handler} that will be handling the {@link Event}
+   * @param handler The {@link Handler} that will be handling the {@link Event}
    */
-  public <E extends Event> void registerHandler(Class<E> eventType,
-                                                Handler<E> handler) {
+  public <E extends Event> void registerHandler(Class<E> eventType, Handler<E> handler) {
     handlers.put(eventType, handler);
   }
 
   /**
-   * Dispatches an {@link Event} depending on it's type.
+   * Dispatches an {@link Event} depending on its type.
    *
    * @param event The {@link Event} to be dispatched
    */
   @SuppressWarnings("unchecked")
   public <E extends Event> void dispatch(E event) {
-    Handler<E> handler = (Handler<E>) handlers.get(event.getClass());
+    var handler = (Handler<E>) handlers.get(event.getClass());
     if (handler != null) {
       handler.onEvent(event);
     }
   }
-
 }

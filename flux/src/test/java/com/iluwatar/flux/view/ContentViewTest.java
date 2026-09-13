@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +24,28 @@
  */
 package com.iluwatar.flux.view;
 
-import com.iluwatar.flux.action.Content;
-import com.iluwatar.flux.store.ContentStore;
-import org.junit.Test;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
-/**
- * Date: 12/12/15 - 10:31 PM
- *
- * @author Jeroen Meulemeester
- */
-public class ContentViewTest {
+import com.iluwatar.flux.action.Content;
+import com.iluwatar.flux.store.ContentStore;
+import org.junit.jupiter.api.Test;
+
+/** ContentViewTest */
+class ContentViewTest {
 
   @Test
-  public void testStoreChanged() throws Exception {
-    final ContentStore store = mock(ContentStore.class);
+  void testStoreChanged() {
+    final var store = mock(ContentStore.class);
     when(store.getContent()).thenReturn(Content.PRODUCTS);
 
-    final ContentView view = new ContentView();
+    final var view = new ContentView();
     view.storeChanged(store);
 
     verify(store, times(1)).getContent();
     verifyNoMoreInteractions(store);
   }
-
 }

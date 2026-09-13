@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,26 +24,20 @@
  */
 package com.iluwatar.specification.selector;
 
-import java.util.function.Predicate;
-
 import com.iluwatar.specification.creature.Creature;
 import com.iluwatar.specification.property.Movement;
 
-/**
- * 
- * Movement selector.
- *
- */
-public class MovementSelector implements Predicate<Creature> {
+/** Movement selector. */
+public class MovementSelector extends AbstractSelector<Creature> {
 
-  private final Movement m;
+  private final Movement movement;
 
   public MovementSelector(Movement m) {
-    this.m = m;
+    this.movement = m;
   }
 
   @Override
   public boolean test(Creature t) {
-    return t.getMovement().equals(m);
+    return t.getMovement().equals(movement);
   }
 }

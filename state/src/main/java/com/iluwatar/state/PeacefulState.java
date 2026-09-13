@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,19 +24,13 @@
  */
 package com.iluwatar.state;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * 
- * Peaceful state.
- *
- */
+/** Peaceful state. */
+@Slf4j
 public class PeacefulState implements State {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(PeacefulState.class);
-
-  private Mammoth mammoth;
+  private final Mammoth mammoth;
 
   public PeacefulState(Mammoth mammoth) {
     this.mammoth = mammoth;
@@ -49,5 +45,4 @@ public class PeacefulState implements State {
   public void onEnterState() {
     LOGGER.info("{} calms down.", mammoth);
   }
-
 }

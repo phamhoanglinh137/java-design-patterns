@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,30 +28,24 @@ import com.iluwatar.flux.action.MenuItem;
 import com.iluwatar.flux.dispatcher.Dispatcher;
 import com.iluwatar.flux.store.MenuStore;
 import com.iluwatar.flux.store.Store;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * 
- * MenuView is a concrete view.
- *
- */
+/** MenuView is a concrete view. */
+@Slf4j
 public class MenuView implements View {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(MenuView.class);
 
   private MenuItem selected = MenuItem.HOME;
 
   @Override
   public void storeChanged(Store store) {
-    MenuStore menuStore = (MenuStore) store;
+    var menuStore = (MenuStore) store;
     selected = menuStore.getSelected();
     render();
   }
 
   @Override
   public void render() {
-    for (MenuItem item : MenuItem.values()) {
+    for (var item : MenuItem.values()) {
       if (selected.equals(item)) {
         LOGGER.info("* {}", item);
       } else {

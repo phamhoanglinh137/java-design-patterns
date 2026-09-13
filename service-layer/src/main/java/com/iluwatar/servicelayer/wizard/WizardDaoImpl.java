@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,42 +24,34 @@
  */
 package com.iluwatar.servicelayer.wizard;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
-
 import com.iluwatar.servicelayer.common.DaoBaseImpl;
-import com.iluwatar.servicelayer.spellbook.Spellbook;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
-/**
- * 
- * WizardDao implementation.
- *
- */
+/** WizardDao implementation. */
 public class WizardDaoImpl extends DaoBaseImpl<Wizard> implements WizardDao {
 
   @Override
   public Wizard findByName(String name) {
-    Session session = getSessionFactory().openSession();
     Transaction tx = null;
-    Wizard result = null;
-    try {
+    Wizard result;
+    try (var session = getSessionFactory().openSession()) {
       tx = session.beginTransaction();
-      Criteria criteria = session.createCriteria(persistentClass);
-      criteria.add(Restrictions.eq("name", name));
-      result = (Wizard) criteria.uniqueResult();
-      for (Spellbook s : result.getSpellbooks()) {
-        s.getSpells().size();
-      }
+      CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+      CriteriaQuery<Wizard> builderQuery = criteriaBuilder.createQuery(Wizard.class);
+      Root<Wizard> root = builderQuery.from(Wizard.class);
+      builderQuery.select(root).where(criteriaBuilder.equal(root.get("name"), name));
+      Query<Wizard> query = session.createQuery(builderQuery);
+      result = query.uniqueResult();
       tx.commit();
     } catch (Exception e) {
       if (tx != null) {
         tx.rollback();
       }
       throw e;
-    } finally {
-      session.close();
     }
     return result;
   }

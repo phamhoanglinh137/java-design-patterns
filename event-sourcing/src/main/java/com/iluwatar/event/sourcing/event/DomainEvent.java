@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +25,18 @@
 package com.iluwatar.event.sourcing.event;
 
 import java.io.Serializable;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * This is the base class for domain events. All events must extend this class.
  *
- * Created by Serdar Hamzaogullari on 06.08.2017.
+ * <p>Created by Serdar Hamzaogullari on 06.08.2017.
  */
+@Setter
+@Getter
+@RequiredArgsConstructor
 public abstract class DomainEvent implements Serializable {
 
   private final long sequenceId;
@@ -36,66 +44,6 @@ public abstract class DomainEvent implements Serializable {
   private final String eventClassName;
   private boolean realTime = true;
 
-  /**
-   * Instantiates a new Domain event.
-   *
-   * @param sequenceId the sequence id
-   * @param createdTime the created time
-   * @param eventClassName the event class name
-   */
-  public DomainEvent(long sequenceId, long createdTime, String eventClassName) {
-    this.sequenceId = sequenceId;
-    this.createdTime = createdTime;
-    this.eventClassName = eventClassName;
-  }
-
-  /**
-   * Gets sequence id.
-   *
-   * @return the sequence id
-   */
-  public long getSequenceId() {
-    return sequenceId;
-  }
-
-  /**
-   * Gets created time.
-   *
-   * @return the created time
-   */
-  public long getCreatedTime() {
-    return createdTime;
-  }
-
-  /**
-   * Is real time boolean.
-   *
-   * @return the boolean
-   */
-  public boolean isRealTime() {
-    return realTime;
-  }
-
-  /**
-   * Sets real time.
-   *
-   * @param realTime the real time
-   */
-  public void setRealTime(boolean realTime) {
-    this.realTime = realTime;
-  }
-
-  /**
-   * Process.
-   */
+  /** Process. */
   public abstract void process();
-
-  /**
-   * Gets event class name.
-   *
-   * @return the event class name
-   */
-  public String getEventClassName() {
-    return eventClassName;
-  }
 }

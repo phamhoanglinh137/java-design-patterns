@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +30,13 @@ import java.nio.channels.SelectionKey;
  * Represents the event dispatching strategy. When {@link NioReactor} senses any event on the
  * registered {@link AbstractNioChannel}s then it de-multiplexes the event type, read or write or
  * connect, and then calls the {@link Dispatcher} to dispatch the read events. This decouples the
- * I/O processing from application specific processing. <br/>
+ * I/O processing from application specific processing. <br>
  * Dispatcher should call the {@link ChannelHandler} associated with the channel on which event
  * occurred.
- * 
- * <p>
- * The application can customize the way in which event is dispatched such as using the reactor
+ *
+ * <p>The application can customize the way in which event is dispatched such as using the reactor
  * thread to dispatch event to channels or use a worker pool to do the non I/O processing.
- * 
+ *
  * @see SameThreadDispatcher
  * @see ThreadPoolDispatcher
  */
@@ -44,10 +45,9 @@ public interface Dispatcher {
    * This hook method is called when read event occurs on particular channel. The data read is
    * provided in <code>readObject</code>. The implementation should dispatch this read event to the
    * associated {@link ChannelHandler} of <code>channel</code>.
-   * 
-   * <p>
-   * The type of <code>readObject</code> depends on the channel on which data was received.
-   * 
+   *
+   * <p>The type of <code>readObject</code> depends on the channel on which data was received.
+   *
    * @param channel on which read event occurred
    * @param readObject object read by channel
    * @param key on which event occurred
@@ -56,7 +56,7 @@ public interface Dispatcher {
 
   /**
    * Stops dispatching events and cleans up any acquired resources such as threads.
-   * 
+   *
    * @throws InterruptedException if interrupted while stopping dispatcher.
    */
   void stop() throws InterruptedException;

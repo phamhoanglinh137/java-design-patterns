@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,24 +26,23 @@ package com.iluwatar.twin;
 
 /**
  * Twin pattern is a design pattern which provides a standard solution to simulate multiple
- * inheritance in java.
- * <p>
- * In this example, the essence of the Twin pattern is the {@link BallItem} class and
- * {@link BallThread} class represent the twin objects to coordinate with each other(via the twin
+ * inheritance in Java.
+ *
+ * <p>In this example, the essence of the Twin pattern is the {@link BallItem} class and {@link
+ * BallThread} class represent the twin objects to coordinate with each other (via the twin
  * reference) like a single class inheriting from {@link GameItem} and {@link Thread}.
  */
-
 public class App {
 
   /**
-   * Program entry point
-   * 
+   * Program entry point.
+   *
    * @param args command line args
    */
   public static void main(String[] args) throws Exception {
 
-    BallItem ballItem = new BallItem();
-    BallThread ballThread = new BallThread();
+    var ballItem = new BallItem();
+    var ballThread = new BallThread();
 
     ballItem.setTwin(ballThread);
     ballThread.setTwin(ballItem);

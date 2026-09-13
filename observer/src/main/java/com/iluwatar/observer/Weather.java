@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +24,19 @@
  */
 package com.iluwatar.observer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
  * Weather can be observed by implementing {@link WeatherObserver} interface and registering as
  * listener.
- * 
  */
+@Slf4j
 public class Weather {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Weather.class);
-
   private WeatherType currentWeather;
-  private List<WeatherObserver> observers;
+  private final List<WeatherObserver> observers;
 
   public Weather() {
     observers = new ArrayList<>();
@@ -54,18 +51,16 @@ public class Weather {
     observers.remove(obs);
   }
 
-  /**
-   * Makes time pass for weather
-   */
+  /** Makes time pass for weather. */
   public void timePasses() {
-    WeatherType[] enumValues = WeatherType.values();
+    var enumValues = WeatherType.values();
     currentWeather = enumValues[(currentWeather.ordinal() + 1) % enumValues.length];
     LOGGER.info("The weather changed to {}.", currentWeather);
     notifyObservers();
   }
 
   private void notifyObservers() {
-    for (WeatherObserver obs : observers) {
+    for (var obs : observers) {
       obs.update(currentWeather);
     }
   }

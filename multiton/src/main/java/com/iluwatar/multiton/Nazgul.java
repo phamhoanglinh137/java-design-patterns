@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,17 +26,16 @@ package com.iluwatar.multiton;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import lombok.Getter;
 
 /**
- * 
  * Nazgul is a Multiton class. Nazgul instances can be queried using {@link #getInstance} method.
- *
  */
 public final class Nazgul {
 
-  private static Map<NazgulName, Nazgul> nazguls;
+  private static final Map<NazgulName, Nazgul> nazguls;
 
-  private NazgulName name;
+  @Getter private final NazgulName name;
 
   static {
     nazguls = new ConcurrentHashMap<>();
@@ -55,9 +56,5 @@ public final class Nazgul {
 
   public static Nazgul getInstance(NazgulName name) {
     return nazguls.get(name);
-  }
-
-  public NazgulName getName() {
-    return name;
   }
 }

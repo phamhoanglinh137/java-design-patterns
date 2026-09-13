@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +24,25 @@
  */
 package com.iluwatar.lazy.loading;
 
-import java.lang.reflect.Field;
 import java.util.function.Supplier;
 
-/**
- * Date: 12/19/15 - 12:27 PM
- *
- * @author Jeroen Meulemeester
- */
-public class Java8HolderTest extends AbstractHolderTest {
+/** Java8HolderTest */
+class Java8HolderTest extends AbstractHolderTest {
 
   private final Java8Holder holder = new Java8Holder();
 
-
   @Override
   Heavy getInternalHeavyValue() throws Exception {
-    final Field holderField = Java8Holder.class.getDeclaredField("heavy");
+    final var holderField = Java8Holder.class.getDeclaredField("heavy");
     holderField.setAccessible(true);
 
-    final Supplier<Heavy> supplier = (Supplier<Heavy>) holderField.get(this.holder);
-    final Class<? extends Supplier> supplierClass = supplier.getClass();
+    final var supplier = (Supplier<Heavy>) holderField.get(this.holder);
+    final var supplierClass = supplier.getClass();
 
     // This is a little fishy, but I don't know another way to test this:
     // The lazy holder is at first a lambda, but gets replaced with a new supplier after loading ...
     if (supplierClass.isLocalClass()) {
-      final Field instanceField = supplierClass.getDeclaredField("heavyInstance");
+      final var instanceField = supplierClass.getDeclaredField("heavyInstance");
       instanceField.setAccessible(true);
       return (Heavy) instanceField.get(supplier);
     } else {
@@ -55,8 +51,7 @@ public class Java8HolderTest extends AbstractHolderTest {
   }
 
   @Override
-  Heavy getHeavy() throws Exception {
+  Heavy getHeavy() {
     return holder.getHeavy();
   }
-
 }

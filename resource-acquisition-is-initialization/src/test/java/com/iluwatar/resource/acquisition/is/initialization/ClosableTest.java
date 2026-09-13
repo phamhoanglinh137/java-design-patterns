@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,40 +24,37 @@
  */
 package com.iluwatar.resource.acquisition.is.initialization;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import java.util.LinkedList;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
-/**
- * Date: 12/28/15 - 9:31 PM
- *
- * @author Jeroen Meulemeester
- */
-public class ClosableTest {
+/** ClosableTest */
+class ClosableTest {
 
   private InMemoryAppender appender;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     appender = new InMemoryAppender();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     appender.stop();
   }
 
   @Test
-  public void testOpenClose() throws Exception {
-    try (final SlidingDoor door = new SlidingDoor(); final TreasureChest chest = new TreasureChest()) {
+  void testOpenClose() {
+    try (final var ignored = new SlidingDoor();
+        final var ignored1 = new TreasureChest()) {
       assertTrue(appender.logContains("Sliding door opens."));
       assertTrue(appender.logContains("Treasure chest opens."));
     }
@@ -63,11 +62,9 @@ public class ClosableTest {
     assertTrue(appender.logContains("Sliding door closes."));
   }
 
-  /**
-   * Logging Appender Implementation
-   */
-  public class InMemoryAppender extends AppenderBase<ILoggingEvent> {
-    private List<ILoggingEvent> log = new LinkedList<>();
+  /** Logging Appender Implementation */
+  static class InMemoryAppender extends AppenderBase<ILoggingEvent> {
+    private final List<ILoggingEvent> log = new LinkedList<>();
 
     public InMemoryAppender() {
       ((Logger) LoggerFactory.getLogger("root")).addAppender(this);
@@ -83,5 +80,4 @@ public class ClosableTest {
       return log.stream().anyMatch(event -> event.getMessage().equals(message));
     }
   }
-
 }

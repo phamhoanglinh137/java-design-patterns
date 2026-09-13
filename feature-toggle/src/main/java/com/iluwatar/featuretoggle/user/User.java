@@ -1,17 +1,19 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
- * <p>
+ * Copyright © 2014-2022 Ilkka Seppälä
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * <p>
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * <p>
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,25 +24,22 @@
  */
 package com.iluwatar.featuretoggle.user;
 
+import lombok.RequiredArgsConstructor;
+
 /**
- * Used to demonstrate the purpose of the feature toggle. This class actually has nothing to do with the pattern.
+ * Used to demonstrate the purpose of the feature toggle. This class actually has nothing to do with
+ * the pattern.
  */
+@RequiredArgsConstructor
 public class User {
 
-  private String name;
-
-  /**
-   * Default Constructor setting the username.
-   *
-   * @param name {@link String} to represent the name of the user.
-   */
-  public User(String name) {
-    this.name = name;
-  }
+  private final String name;
 
   /**
    * {@inheritDoc}
-   * @return The {@link String} representation of the User, in this case just return the name of the user.
+   *
+   * @return The {@link String} representation of the User, in this case just return the name of the
+   *     user.
    */
   @Override
   public String toString() {

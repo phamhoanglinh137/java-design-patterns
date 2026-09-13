@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +24,16 @@
  */
 package com.iluwatar.business.delegate;
 
-/**
- * BusinessDelegate separates the presentation and business tiers
- */
+import lombok.Setter;
+
+/** BusinessDelegate separates the presentation and business tiers. */
+@Setter
 public class BusinessDelegate {
 
   private BusinessLookup lookupService;
-  private BusinessService businessService;
-  private ServiceType serviceType;
 
-  public void setLookupService(BusinessLookup businessLookup) {
-    this.lookupService = businessLookup;
-  }
-
-  public void setServiceType(ServiceType serviceType) {
-    this.serviceType = serviceType;
-  }
-
-  public void doTask() {
-    businessService = lookupService.getBusinessService(serviceType);
-    businessService.doProcessing();
+  public void playbackMovie(String movie) {
+    VideoStreamingService videoStreamingService = lookupService.getBusinessService(movie);
+    videoStreamingService.doProcessing();
   }
 }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,30 +22,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-
 package com.iluwatar.twin;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * GameItem is a common class which provides some common methods for game object.
- */
+/** GameItem is a common class which provides some common methods for game object. */
+@Slf4j
 public abstract class GameItem {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(GameItem.class);
-
-  /**
-   * Template method, do some common logic before draw
-   */
+  /** Template method, do some common logic before draw. */
   public void draw() {
     LOGGER.info("draw");
     doDraw();
   }
 
   public abstract void doDraw();
-
 
   public abstract void click();
 }

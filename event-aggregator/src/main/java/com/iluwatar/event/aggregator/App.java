@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,45 +24,53 @@
  */
 package com.iluwatar.event.aggregator;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
- * 
  * A system with lots of objects can lead to complexities when a client wants to subscribe to
  * events. The client has to find and register for each object individually, if each object has
  * multiple events then each event requires a separate subscription.
- * <p>
- * An Event Aggregator acts as a single source of events for many objects. It registers for all the
- * events of the many objects allowing clients to register with just the aggregator.
- * <p>
- * In the example {@link LordBaelish}, {@link LordVarys} and {@link Scout} deliver events to
- * {@link KingsHand}. {@link KingsHand}, the event aggregator, then delivers the events to
- * {@link KingJoffrey}.
  *
+ * <p>An Event Aggregator acts as a single source of events for many objects. It registers for all
+ * the events of the many objects allowing clients to register with just the aggregator.
+ *
+ * <p>In the example {@link LordBaelish}, {@link LordVarys} and {@link Scout} deliver events to
+ * {@link KingsHand}. {@link KingsHand}, the event aggregator, then delivers the events to {@link
+ * KingJoffrey}.
  */
 public class App {
 
   /**
-   * Program entry point
-   * 
+   * Program entry point.
+   *
    * @param args command line args
    */
   public static void main(String[] args) {
 
-    KingJoffrey kingJoffrey = new KingJoffrey();
-    KingsHand kingsHand = new KingsHand(kingJoffrey);
+    var kingJoffrey = new KingJoffrey();
 
-    List<EventEmitter> emitters = new ArrayList<>();
-    emitters.add(kingsHand);
-    emitters.add(new LordBaelish(kingsHand));
-    emitters.add(new LordVarys(kingsHand));
-    emitters.add(new Scout(kingsHand));
+    var kingsHand = new KingsHand();
+    kingsHand.registerObserver(kingJoffrey, Event.TRAITOR_DETECTED);
+    kingsHand.registerObserver(kingJoffrey, Event.STARK_SIGHTED);
+    kingsHand.registerObserver(kingJoffrey, Event.WARSHIPS_APPROACHING);
+    kingsHand.registerObserver(kingJoffrey, Event.WHITE_WALKERS_SIGHTED);
 
-    for (Weekday day : Weekday.values()) {
-      for (EventEmitter emitter : emitters) {
-        emitter.timePasses(day);
-      }
-    }
+    var varys = new LordVarys();
+    varys.registerObserver(kingsHand, Event.TRAITOR_DETECTED);
+    varys.registerObserver(kingsHand, Event.WHITE_WALKERS_SIGHTED);
+
+    var scout = new Scout();
+    scout.registerObserver(kingsHand, Event.WARSHIPS_APPROACHING);
+    scout.registerObserver(varys, Event.WHITE_WALKERS_SIGHTED);
+
+    var baelish = new LordBaelish(kingsHand, Event.STARK_SIGHTED);
+
+    var emitters = List.of(kingsHand, baelish, varys, scout);
+
+    Arrays.stream(Weekday.values())
+        .<Consumer<? super EventEmitter>>map(day -> emitter -> emitter.timePasses(day))
+        .forEachOrdered(emitters::forEach);
   }
 }

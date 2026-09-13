@@ -1,6 +1,8 @@
-  /**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +24,7 @@
  */
 package com.iluwatar.factorykit.factorykit;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.iluwatar.factorykit.Axe;
 import com.iluwatar.factorykit.Spear;
@@ -30,49 +32,52 @@ import com.iluwatar.factorykit.Sword;
 import com.iluwatar.factorykit.Weapon;
 import com.iluwatar.factorykit.WeaponFactory;
 import com.iluwatar.factorykit.WeaponType;
-import org.junit.Before;
-import org.junit.Test;
-/**
- *  Test Factory Kit Pattern
- */
-public class FactoryKitTest {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+/** Test Factory Kit Pattern */
+class FactoryKitTest {
 
   private WeaponFactory factory;
 
-  @Before
-  public void init() {
-    factory = WeaponFactory.factory(builder -> {
-      builder.add(WeaponType.SPEAR, Spear::new);
-      builder.add(WeaponType.AXE, Axe::new);
-      builder.add(WeaponType.SWORD, Sword::new);
-    });
+  @BeforeEach
+  void init() {
+    factory =
+        WeaponFactory.factory(
+            builder -> {
+              builder.add(WeaponType.SPEAR, Spear::new);
+              builder.add(WeaponType.AXE, Axe::new);
+              builder.add(WeaponType.SWORD, Sword::new);
+            });
   }
 
   /**
-   * Testing {@link WeaponFactory} to produce a SPEAR asserting that the Weapon is an instance of {@link Spear}
+   * Testing {@link WeaponFactory} to produce a SPEAR asserting that the Weapon is an instance of
+   * {@link Spear}
    */
   @Test
-  public void testSpearWeapon() {
-    Weapon weapon = factory.create(WeaponType.SPEAR);
+  void testSpearWeapon() {
+    var weapon = factory.create(WeaponType.SPEAR);
     verifyWeapon(weapon, Spear.class);
   }
 
   /**
-   * Testing {@link WeaponFactory} to produce a AXE asserting that the Weapon is an instance of {@link Axe}
+   * Testing {@link WeaponFactory} to produce a AXE asserting that the Weapon is an instance of
+   * {@link Axe}
    */
   @Test
-  public void testAxeWeapon() {
-    Weapon weapon = factory.create(WeaponType.AXE);
+  void testAxeWeapon() {
+    var weapon = factory.create(WeaponType.AXE);
     verifyWeapon(weapon, Axe.class);
   }
 
-
   /**
-   * Testing {@link WeaponFactory} to produce a SWORD asserting that the Weapon is an instance of {@link Sword}
+   * Testing {@link WeaponFactory} to produce a SWORD asserting that the Weapon is an instance of
+   * {@link Sword}
    */
   @Test
-  public void testWeapon() {
-    Weapon weapon = factory.create(WeaponType.SWORD);
+  void testWeapon() {
+    var weapon = factory.create(WeaponType.SWORD);
     verifyWeapon(weapon, Sword.class);
   }
 
@@ -80,9 +85,9 @@ public class FactoryKitTest {
    * This method asserts that the weapon object that is passed is an instance of the clazz
    *
    * @param weapon weapon object which is to be verified
-   * @param clazz  expected class of the weapon
+   * @param clazz expected class of the weapon
    */
-  private void verifyWeapon(Weapon weapon, Class clazz) {
-    assertTrue("Weapon must be an object of: " + clazz.getName(), clazz.isInstance(weapon));
+  private void verifyWeapon(Weapon weapon, Class<?> clazz) {
+    assertTrue(clazz.isInstance(weapon), "Weapon must be an object of: " + clazz.getName());
   }
 }

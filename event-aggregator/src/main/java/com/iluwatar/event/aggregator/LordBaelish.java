@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +24,18 @@
  */
 package com.iluwatar.event.aggregator;
 
-/**
- * 
- * LordBaelish produces events.
- *
- */
+/** LordBaelish produces events. */
 public class LordBaelish extends EventEmitter {
 
-  public LordBaelish() {
-    super();
-  }
+  public LordBaelish() {}
 
-  public LordBaelish(EventObserver obs) {
-    super(obs);
+  public LordBaelish(EventObserver obs, Event e) {
+    super(obs, e);
   }
 
   @Override
   public void timePasses(Weekday day) {
-    if (day.equals(Weekday.FRIDAY)) {
+    if (day == Weekday.FRIDAY) {
       notifyObservers(Event.STARK_SIGHTED);
     }
   }

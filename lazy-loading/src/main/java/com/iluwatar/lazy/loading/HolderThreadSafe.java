@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +24,23 @@
  */
 package com.iluwatar.lazy.loading;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
  * Same as HolderNaive but with added synchronization. This implementation is thread safe, but each
  * {@link #getHeavy()} call costs additional synchronization overhead.
- *
  */
+@Slf4j
 public class HolderThreadSafe {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(HolderThreadSafe.class);
 
   private Heavy heavy;
 
-  /**
-   * Constructor
-   */
+  /** Constructor. */
   public HolderThreadSafe() {
     LOGGER.info("HolderThreadSafe created");
   }
 
-  /**
-   * Get heavy object
-   */
+  /** Get heavy object. */
   public synchronized Heavy getHeavy() {
     if (heavy == null) {
       heavy = new Heavy();

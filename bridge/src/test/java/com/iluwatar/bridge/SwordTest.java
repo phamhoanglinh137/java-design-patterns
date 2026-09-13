@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +24,21 @@
  */
 package com.iluwatar.bridge;
 
-import org.junit.Test;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 
-/**
- * Tests for sword
- */
-public class SwordTest extends WeaponTest {
+import org.junit.jupiter.api.Test;
+
+/** Tests for sword */
+class SwordTest extends WeaponTest {
 
   /**
    * Invoke all possible actions on the weapon and check if the actions are executed on the actual
    * underlying weapon implementation.
    */
   @Test
-  public void testSword() throws Exception {
-    final Sword sword = spy(new Sword(mock(FlyingEnchantment.class)));
+  void testSword() {
+    final var sword = spy(new Sword(mock(FlyingEnchantment.class)));
     testBasicWeaponActions(sword);
   }
 }

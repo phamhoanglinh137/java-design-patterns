@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,26 +28,19 @@ import com.iluwatar.flux.action.Action;
 import com.iluwatar.flux.action.ActionType;
 import com.iluwatar.flux.action.MenuAction;
 import com.iluwatar.flux.action.MenuItem;
+import lombok.Getter;
 
-/**
- * 
- * MenuStore is a concrete store.
- *
- */
+/** MenuStore is a concrete store. */
 public class MenuStore extends Store {
 
-  private MenuItem selected = MenuItem.HOME;
+  @Getter private MenuItem selected = MenuItem.HOME;
 
   @Override
   public void onAction(Action action) {
     if (action.getType().equals(ActionType.MENU_ITEM_SELECTED)) {
-      MenuAction menuAction = (MenuAction) action;
+      var menuAction = (MenuAction) action;
       selected = menuAction.getMenuItem();
       notifyChange();
     }
-  }
-
-  public MenuItem getSelected() {
-    return selected;
   }
 }

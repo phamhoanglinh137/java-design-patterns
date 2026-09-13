@@ -1,17 +1,19 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
- * <p>
+ * Copyright © 2014-2022 Ilkka Seppälä
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * <p>
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * <p>
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,16 +24,14 @@
  */
 package com.iluwatar.pageobject.pages;
 
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlPasswordInput;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import java.io.IOException;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlPasswordInput;
+import org.htmlunit.html.HtmlSubmitInput;
+import org.htmlunit.html.HtmlTextInput;
 
-/**
- * Page Object encapsulating the Login Page (login.html)
- */
+/** Page Object encapsulating the Login Page (login.html) */
 public class LoginPage extends Page {
 
   private static final String LOGIN_PAGE_HTML_FILE = "login.html";
@@ -62,14 +62,11 @@ public class LoginPage extends Page {
     return this;
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   public boolean isAt() {
     return "Login".equals(page.getTitleText());
   }
-
 
   /**
    * Enters the username into the username input text field
@@ -78,11 +75,10 @@ public class LoginPage extends Page {
    * @return {@link LoginPage}
    */
   public LoginPage enterUsername(String username) {
-    HtmlTextInput usernameInputTextField = (HtmlTextInput) page.getElementById("username");
+    var usernameInputTextField = (HtmlTextInput) page.getElementById("username");
     usernameInputTextField.setText(username);
     return this;
   }
-
 
   /**
    * Enters the password into the password input password field
@@ -91,20 +87,19 @@ public class LoginPage extends Page {
    * @return {@link LoginPage}
    */
   public LoginPage enterPassword(String password) {
-    HtmlPasswordInput passwordInputPasswordField = (HtmlPasswordInput) page.getElementById("password");
+    var passwordInputPasswordField = (HtmlPasswordInput) page.getElementById("password");
     passwordInputPasswordField.setText(password);
     return this;
   }
 
-
   /**
    * Clicking on the login button to 'login'
    *
-   * @return {@link AlbumListPage}
-   *        - this is the page that user gets navigated to once successfully logged in
+   * @return {@link AlbumListPage} - this is the page that user gets navigated to once successfully
+   *     logged in
    */
   public AlbumListPage login() {
-    HtmlSubmitInput loginButton = (HtmlSubmitInput) page.getElementById("loginButton");
+    var loginButton = (HtmlSubmitInput) page.getElementById("loginButton");
     try {
       loginButton.click();
     } catch (IOException e) {
@@ -112,5 +107,4 @@ public class LoginPage extends Page {
     }
     return new AlbumListPage(webClient);
   }
-
 }

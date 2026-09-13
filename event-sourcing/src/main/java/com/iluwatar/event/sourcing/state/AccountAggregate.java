@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,19 +27,18 @@ package com.iluwatar.event.sourcing.state;
 import com.iluwatar.event.sourcing.domain.Account;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
- * This is the static accounts map holder class.
- * This class holds the state of the accounts.
+ * This is the static accounts map holder class. This class holds the state of the accounts.
  *
- * Created by Serdar Hamzaogullari on 06.08.2017.
+ * <p>Created by Serdar Hamzaogullari on 06.08.2017.
  */
 public class AccountAggregate {
 
   private static Map<Integer, Account> accounts = new HashMap<>();
 
-  private AccountAggregate() {
-  }
+  private AccountAggregate() {}
 
   /**
    * Put account.
@@ -55,16 +56,10 @@ public class AccountAggregate {
    * @return the copy of the account or null if not found
    */
   public static Account getAccount(int accountNo) {
-    Account account = accounts.get(accountNo);
-    if (account == null) {
-      return null;
-    }
-    return account.copy();
+    return Optional.of(accountNo).map(accounts::get).map(Account::copy).orElse(null);
   }
 
-  /**
-   * Reset state.
-   */
+  /** Reset state. */
   public static void resetState() {
     accounts = new HashMap<>();
   }

@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,18 +28,7 @@ import com.iluwatar.eda.event.UserCreatedEvent;
 import com.iluwatar.eda.event.UserUpdatedEvent;
 
 /**
- * This {@link User} class is a basic pojo used to demonstrate user data sent along with
- * the {@link UserCreatedEvent} and {@link UserUpdatedEvent} events.
+ * This {@link User} class is a basic pojo used to demonstrate user data sent along with the {@link
+ * UserCreatedEvent} and {@link UserUpdatedEvent} events.
  */
-public class User {
-
-  private String username;
-
-  public User(String username) {
-    this.username = username;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-}
+public record User(String username) {}

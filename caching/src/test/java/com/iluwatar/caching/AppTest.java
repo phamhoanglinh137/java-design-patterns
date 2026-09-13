@@ -1,6 +1,8 @@
-/**
+/*
+ * This project is licensed under the MIT license. Module model-view-viewmodel is using ZK framework licensed under LGPL (see lgpl-3.0.txt).
+ *
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright © 2014-2022 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,17 +24,20 @@
  */
 package com.iluwatar.caching;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import java.io.IOException;
+import org.junit.jupiter.api.Test;
 
-/**
- * Tests that Caching example runs without errors.
- */
-public class AppTest {
+/** Tests that Caching example runs without errors. */
+class AppTest {
+  /**
+   * Issue: Add at least one assertion to this test case.
+   *
+   * <p>Solution: Inserted assertion to check whether the execution of the main method in {@link
+   * App} throws an exception.
+   */
   @Test
-  public void test() throws IOException {
-    String[] args = {};
-    App.main(args);
+  void shouldExecuteApplicationWithoutException() {
+    assertDoesNotThrow(() -> App.main(new String[] {}));
   }
 }
